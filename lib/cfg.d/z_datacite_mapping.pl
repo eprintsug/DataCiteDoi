@@ -60,6 +60,7 @@ $c->{datacite_mapping_creators} = sub {
             if ($orcid eq '') {
                 $creators->appendChild($author);
             } else {
+                $orcid =~ s#^(?:https?:\/\/)?orcid\.org\/(.*)$#$1#gi;
                 $author->appendChild($xml->create_data_element("nameIdentifier", $orcid, schemeURI =>"http://orcid.org/", nameIdentifierScheme=>"ORCID"));
             }
         }
