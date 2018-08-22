@@ -2,7 +2,7 @@
 $c->{plugins}{"Export::DataCiteXML"}{params}{disable} = 0;
 $c->{plugins}{"Event::DataCiteEvent"}{params}{disable} = 0;
 
-#which field do use for the doi
+# which field to use for the doi
 $c->{datacitedoi}{eprintdoifield} = "id_number";
 
 #for xml:lang attributes in XML
