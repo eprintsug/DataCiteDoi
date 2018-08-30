@@ -7,9 +7,7 @@ EPrints::Plugin::Event::DataCiteEvent
 package EPrints::Plugin::Event::DataCiteEvent;
 
 use EPrints::Plugin::Event;
-use LWP;
-use Crypt::SSLeay;
-use HTTP::Headers::Util;
+use WWW::Curl::Easy;
 
 @ISA = qw( EPrints::Plugin::Event );
 
@@ -74,26 +72,58 @@ sub datacite_doi
 
 
 sub datacite_request {
+  print STDERR "Performing DataCite request\n";
   my ($method, $url, $user_name, $user_pw, $content, $content_type) = @_;
 
   # build request
-  my $headers = HTTP::Headers->new(
-    'Accept'  => 'application/xml',
-    'Content-Type' => $content_type
+  my @myheaders = (
+    "Accept: application/xml",
+    "Content-Type: $content_type"
   );
-  
-  my $req = HTTP::Request->new(
-    $method => $url,
-    $headers, Encode::encode_utf8( $content )
-  );
-  $req->authorization_basic($user_name, $user_pw);
+  print STDERR "Build headers array\n";
 
-  # pass request to the user agent and get a response back
-  my $ua = LWP::UserAgent->new;
-  my $res = $ua->request($req);
+  my $curl = new WWW::Curl::Easy;
 
-  return ($res->content(),$res->code());
+  $curl->setopt(CURLOPT_FAILONERROR,1);
+  $curl->setopt(CURLOPT_HEADER,1); # when it works put this behind an 'if debug'
+  $curl->setopt(CURLOPT_VERBOSE, 1); # when it works put this behind an 'if debug'
+  $curl->setopt(CURLOPT_POST, 1);  # TODO: Make conditional on $method
+  $curl->setopt(CURLOPT_URL, $url);
+  $curl->setopt(CURLOPT_USERNAME, $user_name);
+  $curl->setopt(CURLOPT_PASSWORD, $user_pw);
+  $curl->setopt(CURLOPT_POSTFIELDS, $content);
+  $curl->setopt(CURLOPT_HTTPHEADER, \@myheaders);
+
+  my $response_body;
+  open (my $fileb, ">", \$response_body);
+  $curl->setopt(CURLOPT_WRITEDATA,$fileb);
+
+
+  print STDERR "Finished setting Curl options\n";
+
+  # pass request and get a response back
+  my $retcode = $curl->perform;
+
+  print STDERR "Network transaction complete\n";
+
+  # Use response to determine HTTP status code
+  $http_retcode    = $curl->getinfo(CURLINFO_HTTP_CODE);
+
+  # Ensure we return a useful (well, usable) message and error response
+  if ($retcode == 0) {
+    $content = "Received response: $response_body\n";
+  } else {
+    $http_prose = $curl->strerror($retcode);
+    $content = "An error happened: $http_prose $http_retcode (Curl error code $retcode)\n";
+  }
+
+  print STDERR "Return code checked (Curl $retcode; HTTP $http_retcode), suitable message generated\n";
+
+  print STDERR "About to return() and leave datacite_request{}\n";
+  return ($content, $http_retcode);
 }
+
+
 
 #RM lets do the DOI coining somewhere (reasonably) accessible
 sub coin_doi {
