@@ -151,8 +151,8 @@ if($c->{datacitedoi}{action_coin}){
 If using a custom licence you must have phrases for your licences URI and typename (phrases for common licences are supplied in ``lib/lang/en/phrases/coinDOI.xml``). For example in ``archives/REPOID/cfg/lang/en/phrases/copyright.xml`` you might have these entries
 
 ```
-        <epp:phrase id="licenses_uri_cc_exampleorg">https://example.org/eprints/about/legal/</epp:phrase>
-        <epp:phrase id="licenses_typename_cc_exampleor">University of Example important licence</epp:phrase>
+<epp:phrase id="licenses_uri_cc_exampleorg">https://example.org/eprints/about/legal/</epp:phrase>
+<epp:phrase id="licenses_typename_cc_exampleor">University of Example important licence</epp:phrase>
 
 ```
 
