@@ -150,19 +150,16 @@ if($c->{datacitedoi}{action_coin}){
 How it works
 -------------
 
-/lib/plugins/EPrints/Plugin/Event/DataCiteEvent.pm
-This is added to the queue and actually mints the doi.
+``lib/plugins/EPrints/Plugin/Event/DataCiteEvent.pm`` is added to the queue and actually mints the doi.
 
-lib/plugins/EPrints/Plugin/Sreen/EPrint/Staff/CoinDOI.pm
-This adds a button to enable staff to choose when to coin the DOI and request registration
+``lib/plugins/EPrints/Plugin/Sreen/EPrint/Staff/CoinDOI.pm`` adds a button to enable staff to choose when to coin the DOI and request registration.
 
-/lib/plugins/EPrints/Plugin/Export/DataCiteXML.pm
-This exports the metadata xml required for minting, this can be used independently and through the user interface. 
+``lib/plugins/EPrints/Plugin/Export/DataCiteXML.pm`` exports the metadata xml required for minting, this can be used independently and through the user interface. 
 
-By default the plugin uses the following mapping:
+By default the plugin produces the following mapping:
 ```xml
 <?xml version="1.0"?>
-<resource xmlns="http://datacite.org/schema/kernel-2.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://datacite.org/schema/kernel-2.2 http://schema.datacite.org/meta/kernel-2.2/metadata.xsd">
+<resource xmlns="http://datacite.org/schema/kernel-4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4/metadata.xsd">
 	<identifier identifierType="DOI">[[From Config: $c->{datacitedoi}{prefix}/$c->{datacitedoi}{repoid]]/{{Eprintid}}</identifier>
 	<creators>
 		<creator>
