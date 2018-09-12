@@ -8,7 +8,7 @@ In order to use the DataCite API the plugin requires the following perl librarie
 
 ```
 use LWP;
-use Crypt::SSLeay;
+use WWW::Curl;
 ```
 
 Installation
