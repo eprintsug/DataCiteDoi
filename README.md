@@ -4,7 +4,7 @@ DateCiteDoi - A plugin to mint DataCite DOIs to eprints
 Requirements
 -------------
 
-In order to use the DataCite API the plugin requires the following perl libraries on to of EPrints requirements.
+In order to use the DataCite API the plugin requires the following perl libraries on top of EPrints requirements.
 
 ```
 use LWP;
@@ -32,7 +32,7 @@ This config file contains all the configurable settings for the plugin, see comm
 $c->{plugins}{"Export::DataCiteXML"}{params}{disable} = 0;
 $c->{plugins}{"Event::DataCiteEvent"}{params}{disable} = 0;
 
-#which field do use for the doi
+# which field to use for the doi
 $c->{datacitedoi}{eprintdoifield} = "id_number";
 
 #When should you register/update doi info.
@@ -146,6 +146,18 @@ if($c->{datacitedoi}{action_coin}){
 }
 
 ```
+
+
+If using a custom licence you must have phrases for your licences URI and typename (phrases for common licences are supplied in ``lib/lang/en/phrases/coinDOI.xml``). For example in ``archives/REPOID/cfg/lang/en/phrases/copyright.xml`` you might have these entries
+
+```
+<epp:phrase id="licenses_uri_cc_exampleorg">https://example.org/eprints/about/legal/</epp:phrase>
+<epp:phrase id="licenses_typename_cc_exampleor">University of Example important licence</epp:phrase>
+
+```
+
+See [EPrints wiki](https://wiki.eprints.org/w/Phrase_Format) for the full phrase file format and note that variables (like ``{$config{http_url}}``) do not appear to be supported in licenses_uri_*.
+
 
 How it works
 -------------
