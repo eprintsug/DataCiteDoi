@@ -19,15 +19,15 @@ $c->{datacitedoi}{apiurl} = "https://mds.test.datacite.org";
 $c->{datacitedoi}{user} = "USER";
 $c->{datacitedoi}{pass} = "PASS";
 
-# datacite requires a Publisher
+# DataCite requires a Publisher
 # The name of the entity that holds, archives, publishes,
 # prints, distributes, releases, issues, or produces the
 # resource. This property will be used to formulate the
 # citation, so consider the prominence of the role.
 # eg World Data Center for Climate (WDCC);
-$c->{datacitedoi}{publisher} = "Eprints Repo";
+$c->{datacitedoi}{publisher} = "EPrints Repo";
 
-# Namespace and location for datacite XML schema
+# Namespace and location for DataCite XML schema
 # feel free to update, though no guarantees it'll be accepted if you do
 $c->{datacitedoi}{xmlns} = "http://datacite.org/schema/kernel-4";
 $c->{datacitedoi}{schemaLocation} = $c->{datacitedoi}{xmlns}." http://schema.datacite.org/meta/kernel-4/metadata.xsd";
@@ -62,7 +62,7 @@ $c->{datacitedoi}{typemap}{data_collection} = {v=>'Dataset',a=>'Dataset'};
 $c->{datacitedoi}{delimiters} = ["/","."];
 
 # If set, plugin will attempt to register what is found in the EP DOI field ($c->{datacitedoi}{eprintdoifield})
-# Will only work if what is found adheres to DOI syntax rules (obvioulsy)
+# Will only work if what is found adheres to DOI syntax rules (obviously)
 $c->{datacitedoi}{allow_custom_doi} = 0;
 
 #Datacite recommend digits of length 8-10 set this param to pad the id to required length
@@ -112,7 +112,7 @@ if($c->{datacitedoi}{auto_coin}){
 	});
 }
 
-# Activate an action button, the plugin for whcih is at
+# Activate an action button, the plugin for which is at
 # /plugins/EPrints/Plugin/Screen/EPrint/Staff/CoinDOI.pm
 if($c->{datacitedoi}{action_coin}){
  	$c->{plugins}{"Screen::EPrint::Staff::CoinDOI"}{params}{disable} = 0;

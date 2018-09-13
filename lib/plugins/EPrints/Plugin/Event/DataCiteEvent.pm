@@ -19,7 +19,7 @@ sub datacite_doi
 
 		my $repository = $self->repository();
 
-		#Check object status first.... TODO Make work for dataobj == doument (just in case)
+		# Check object status first.... TODO: Make work for dataobj == document (just in case)
 		my $shoulddoi = $repository->get_conf( "datacitedoi", "eprintstatus",  $dataobj->value( "eprint_status" ));
 		#Check Doi Status
 		if(!$shoulddoi){

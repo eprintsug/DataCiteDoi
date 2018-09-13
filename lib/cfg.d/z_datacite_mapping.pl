@@ -1,11 +1,11 @@
 #####################################################
 # New architecture
-# for print => datacite mapping####################################################
+# for print => datacite mapping
+####################################################
 
-# These first two both map to resourceType(and resourceTypeGeneral) the first is
-# for pubs repos the second
-# for data(but either can be used
-#     for ether f the eprint field is there)
+# These first two both map to resourceType (and resourceTypeGeneral). The first
+# is for pubs repos the second for data (but either can be used for either if
+# the eprint field is there).
 $c->{datacite_mapping_type} = sub {
 
     my($xml, $dataobj, $repo, $value) = @_;
@@ -83,7 +83,7 @@ $c->{datacite_mapping_title} = sub {
 
 
 
-    return $titles# of somedescription
+    return $titles	# of some description
 };
 
 
@@ -234,7 +234,7 @@ $c->{datacite_mapping_rights_from_docs} = sub {
 
         my $license = $doc->get_value("license");
         my $content = $doc->get_value("content");
-	#This doc is the license (for docs that have licese == attached
+	# This doc is the license (for docs that have license == attached
 	if($content eq "licence"){
 		$attached_licence = $doc->url;
 		next;
