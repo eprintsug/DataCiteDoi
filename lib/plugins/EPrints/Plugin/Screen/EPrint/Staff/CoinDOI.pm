@@ -49,6 +49,12 @@ sub allow_coindoi
 	#TODO a version that works for documents too
 	my $dataobj = $self->{processor}->{eprint}; 
         return 0 unless $repository->get_conf( "datacitedoi", "eprintstatus",  $dataobj->value( "eprint_status" ));
+
+	if (defined $repository->get_conf( "datacitedoi", "typesallowed")) {
+		# Is this type of eprint allowed/denied coining?
+		return 0 unless $repository->get_conf( "datacitedoi", "typesallowed",  $dataobj->get_type);
+	}
+
   # Don't show coinDOI button if a DOI is already registered 
   return 0 if $dataobj->is_set($repository->get_conf( "datacitedoi", "eprintdoifield"));
   return $self->allow( "eprint/edit:editor" );

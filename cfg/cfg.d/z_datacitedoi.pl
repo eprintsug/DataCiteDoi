@@ -11,6 +11,16 @@ $c->{datacitedoi}{defaultlangtag} = "en-GB";
 #When should you register/update doi info.
 $c->{datacitedoi}{eprintstatus} = {inbox=>0,buffer=>1,archive=>1,deletion=>0};
 
+# Choose which EPrint types are allowed (or denied) the ability to coin DOIs. Keys must be lower case and be eprints *types* not *type_names*.
+# Entries here can be explicitly skipped by setting 0; however those not listed with a 1 are not given a Coin DOI button by default.
+# To include the 'Coin DOI' button on all types leave this undefined.
+# $c->{datacitedoi}{typesallowed} = {
+# 				'article'=>0,                   # Article
+# 				'thesis'=>1,                    # Thesis
+# 				'creative_works' => 1,          # Creative Works
+# 				'dataset' => 1,                 # Dataset
+#                                 };
+
 #set these (you will get the from data site)
 # doi = {prefix}/{repoid}/{eprintid}
 $c->{datacitedoi}{prefix} = "10.5072";
