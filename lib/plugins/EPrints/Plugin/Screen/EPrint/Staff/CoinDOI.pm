@@ -54,7 +54,7 @@ sub allow_coindoi
         !$repository->get_conf("datacitedoi","allow_custom_doi"));
 	#TODO don't allow the coinDOI button if a DOI is already registered (may require a db flag for successful reg)
     # Or maybe check with datacite api to see if a doi is registered
-    return $self->allow( "eprint/edit:editor" );
+    return $self->allow( $repository->get_conf( "datacitedoi", "minters") );
 }
 
 sub action_coindoi

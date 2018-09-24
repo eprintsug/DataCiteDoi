@@ -19,6 +19,10 @@ $c->{datacitedoi}{apiurl} = "https://mds.test.datacite.org/";
 $c->{datacitedoi}{user} = "USER";
 $c->{datacitedoi}{pass} = "PASS";
 
+# Priviledge required to be able to mint DOIs
+# See https://wiki.eprints.org/w/User_roles.pl for role and privilege configuration
+$c->{datacitedoi}{minters} = "eprint/edit:editor";
+
 # datacite requires a Publisher
 # The name of the entity that holds, archives, publishes,
 # prints, distributes, releases, issues, or produces the
