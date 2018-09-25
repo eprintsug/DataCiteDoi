@@ -464,6 +464,20 @@ $c->{validate_datacite} = sub
 
 	my @problems = ();
 
+	# If this host is not production it should probably use a test endpoint.
+	# To prevent this check change the test_host_regex regex not to match hostname
+	# or ensure test_host_regex is undefined (as is the default)
+	if (defined $c->{datacitedoi}{test_host_regex}){
+		use Sys::Hostname;
+		if (hostname =~ $c->{datacitedoi}{test_host_regex}) {
+			push @problems, $repository->html_phrase(
+				"datacite_validate:doi_prefix_mismatch",
+				match_regexp=>$repo->get_conf("datacitedoi", "test_host_regex"),
+				configured_doi_prefix=>$repo->get_conf("datacitedoi", "prefix"),
+			);
+		}
+	}
+
     #NEED CREATORS
 	if( !$eprint->is_set( "creators" ) && 
 		!$eprint->is_set( "corp_creators" ) )
@@ -509,17 +523,3 @@ $c->{validate_datacite} = sub
 	return( @problems );
 };
 
-
-	# If this host is not production it should probably use a test endpoint.
-	# To prevent this check change the test_host_regex regex not to match hostname
-	# or ensure test_host_regex is undefined (as is the default)
-	if (defined $c->{datacitedoi}{test_host_regex}){
-		use Sys::Hostname;
-		if (hostname =~ $c->{datacitedoi}{test_host_regex}) {
-			push @problems, $repository->html_phrase(
-				"datacite_validate:doi_prefix_mismatch",
-				match_regexp=>$repo->get_conf("datacitedoi", "test_host_regex"),
-				configured_doi_prefix=>$repo->get_conf("datacitedoi", "prefix"),
-				);
-		}
-	}

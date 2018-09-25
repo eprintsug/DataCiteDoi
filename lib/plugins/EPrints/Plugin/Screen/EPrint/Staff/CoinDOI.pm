@@ -123,7 +123,7 @@ sub add_result_message
         $self->{processor}->{screenid} = "EPrint::View";
 }
 
-# Validate this datacite submission this will call validate_datacite in cfg.d/z_datacite.pl
+# Validate this datacite submission - this will call validate_datacite in cfg.d/z_datacite.pl
 sub validate
 {
 	my( $self, $eprint ) = @_;
