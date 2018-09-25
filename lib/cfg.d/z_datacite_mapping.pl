@@ -1,227 +1,389 @@
 #####################################################
 # New architecture
-# for print => datacite mapping####################################################
+# for Eprint => datacite mapping
+#####################################################
 
-# These first two both map to resourceType(and resourceTypeGeneral) the first is
-# for pubs repos the second
-# for data(but either can be used
-#     for ether f the eprint field is there)
+####################################
+# Mandatory fields for Datacite 4.0
+# - identifier
+# - resourceType
+# - creators
+# - titles
+# - publisher
+# - publicationYear
+# #################################
+
+# identifer this is the DOI and is automatically generated see EPrints::Plugin::Event::DataCiteEvent::coin_doi
+
+##################################################
+# resourceType this is derived from the eprint.type and the datacitedoi->{typemap} in cfg/cfg.d/z_datacite.pl
+# https://schema.datacite.org/meta/kernel-4.0/metadata.xsd#resourceType
+
 $c->{datacite_mapping_type} = sub {
 
-    my($xml, $dataobj, $repo, $value) = @_;
+    my($xml, $dataobj, $repo) = @_;
 
-    my $pub_resourceType = $repo->get_conf("datacitedoi", "typemap", $value);
-    if (defined $pub_resourceType) {
-        return $xml->create_data_element("resourceType", $pub_resourceType->{'v'}, resourceTypeGeneral=>$pub_resourceType->{'a'});
+    my $resourceTypeGeneral_opts = [ qw/ 
+        Audiovisual
+        Collection
+        Dataset
+        Event
+        Image
+        InteractiveResource
+        Model
+        PhysicalObject
+        Service
+        Software
+        Sound
+        Text15
+        Workflow
+        Other
+    /];
+
+    my $resourceType = undef;
+    if($dataobj->exists_and_set("type")){
+        my $pub_resourceType = $repo->get_conf("datacitedoi", "typemap", $dataobj->value("type"));
+        if (defined $pub_resourceType) {
+                if(grep $pub_resourceType->{'a'} eq $_, @$resourceTypeGeneral_opts){
+                    $resourceType = $xml->create_data_element("resourceType", $pub_resourceType->{'v'}, 
+                        resourceTypeGeneral=>$pub_resourceType->{'a'});
+                }
+        }
     }
-
-    return undef;
+    # We have the recollect plugin in play, so let's use the data_type if set
+    if(defined $repo->get_conf("recollect") && $dataobj->exists_and_set("data_type")){
+        if(grep $dataobj->value("data_type") eq $_, @$resourceTypeGeneral_opts){
+                $resourceType = $xml->create_data_element("resourceType", "Dataset", 
+                    resourceTypeGeneral=>$dataobj->value("data_type"));
+        }
+    }
+    return $resourceType;
 };
 
-$c->{datacite_mapping_data_type} = sub {
-
-    my($xml, $dataobj, $repo, $value) = @_;
-
-    return $xml->create_data_element("resourceType", $value, resourceTypeGeneral=>$value);
-};
+###############################################################
+# creators this is derived from creators and/or corp_creators
+# https://schema.datacite.org/meta/kernel-4.0/metadata.xsd#creators
 
 $c->{datacite_mapping_creators} = sub {
 
-    my($xml, $dataobj, $repo, $value) = @_;
+    my($xml, $dataobj, $repo) = @_;
 
-    my $creators = $xml->create_element("creators");
+    my $creators = undef;
+    
+    if($dataobj->exists_and_set("creators")){
 
-    foreach my $name(@$value) {
-        my $author = $xml->create_element("creator");
+        $creators = $xml->create_element("creators");
 
-        my $name_str = EPrints::Utils::make_name_string($name->{name});
+        foreach my $name(@{$dataobj->value("creators")}) {
+            my $author = $xml->create_element("creator");
 
-        my $family = $name->{name}->{family};
-        my $given = $name->{name}->{given};
-        my $orcid = $name->{orcid};
+            my $name_str = EPrints::Utils::make_name_string($name->{name});
 
-        if ($family eq '' && $given eq '') {
-            $creators->appendChild($author);
-        } else {
-            $author->appendChild($xml->create_data_element("creatorName", $name_str));
-        }
-        if ($given eq '') {
-            $creators->appendChild($author);
-        } else {
-            $author->appendChild($xml->create_data_element("givenName", $given));
-        }
-        if ($family eq '') {
-            $creators->appendChild($author);
-        } else {
-            $author->appendChild($xml->create_data_element("familyName", $family));
-        }
-        if ($dataobj->exists_and_set("creators_orcid")) {
+            my $family = $name->{name}->{family};
+            my $given = $name->{name}->{given};
+            my $orcid = $name->{orcid};
 
-            if ($orcid eq '') {
+            if ($family eq '' && $given eq '') {
                 $creators->appendChild($author);
             } else {
-                $author->appendChild($xml->create_data_element("nameIdentifier", $orcid, schemeURI =>"http://orcid.org/", nameIdentifierScheme=>"ORCID"));
+                $author->appendChild($xml->create_data_element("creatorName", $name_str));
             }
-        }
+            if ($given eq '') {
+                $creators->appendChild($author);
+            } else {
+                $author->appendChild($xml->create_data_element("givenName", $given));
+            }
+            if ($family eq '') {
+                $creators->appendChild($author);
+            } else {
+                $author->appendChild($xml->create_data_element("familyName", $family));
+            }
+            if ($dataobj->exists_and_set("creators_orcid")) {
 
-        $creators->appendChild($author);
+                if ($orcid eq '') {
+                    $creators->appendChild($author);
+                } else {
+                    $author->appendChild($xml->create_data_element("nameIdentifier", $orcid, 
+                            schemeURI =>"http://orcid.org/", 
+                            nameIdentifierScheme=>"ORCID"));
+                }
+            }
+
+            $creators->appendChild($author);
+        }
+    }
+    if($dataobj->exists_and_set("corp_creators")){
+
+        $creators = $xml->create_element("creators") if (!defined $creators);
+        $creators->appendChild(my $creator = $xml->create_element("creator"));
+        $creator->appendChild($xml->create_data_element("creatorName", $dataobj->value("corp_creators")));
+
     }
     return $creators
 };
 
+##################################################
+# titles this is derived from the eprint.title
+# https://schema.datacite.org/meta/kernel-4.0/metadata.xsd#titles
 
 $c->{datacite_mapping_title} = sub {
-    my($xml, $dataobj, $repo, $value) = @_;
+    my($xml, $dataobj, $repo) = @_;
 
-
-
-        my $titles = $xml->create_element("titles");
-        $titles->appendChild($xml->create_data_element("title", $dataobj->render_value("title"), "xml:lang"=>"en-us"));
-
-
-
-
-
-
-    return $titles# of somedescription
+    my $titles = undef;
+    if($dataobj->exists_and_set("title")){
+        $titles = $xml->create_element("titles");
+        $titles->appendChild($xml->create_data_element("title", $dataobj->render_value("title"), 
+                "xml:lang"=>$repo->get_language->get_id));
+    }
+    return $titles
 };
 
+#####################################################
+# publisher this is derived from the eprint.publisher
+# https://schema.datacite.org/meta/kernel-4.0/metadata.xsd#publisher
 
 $c->{datacite_mapping_publisher} = sub {
-    my($xml, $dataobj, $repo, $value) = @_;
 
-return $xml->create_data_element("publisher", $dataobj->render_value("publisher"));
+    my($xml, $dataobj, $repo) = @_;
+
+    my $publisher = $repo->get_conf("datacitedoi","publisher");
+    if($dataobj->exists_and_set("publisher")){
+        $publisher = $dataobj->render_value("publisher");
+    }
+    return $xml->create_data_element("publisher", $publisher);
 
 };
 
+##################################################
+# publicationYear this is derived from the eprint.date (this will have the pub date if datesdatesdates is in play)
+# https://schema.datacite.org/meta/kernel-4.0/metadata.xsd#publicationYear
+# Year when the data is made publicly available. 
+# If an embargo period has been in effect, use the date when the embargo period ends.
 
+$c->{datacite_mapping_date} = sub {
+
+    my ( $xml, $dataobj, $repo ) = @_;
+
+    my $publicationYear = undef;
+    my $pub_year = undef;
+    if($dataobj->exists_and_set("date") && $dataobj->value("date_type") eq "published"){
+        $dataobj->get_value( "date" ) =~ /^([0-9]{4})/;
+        $pub_year = $1;
+    }
+     
+    for my $doc ( $dataobj->get_all_documents() ) {
+        if($doc->exists_and_set("date_embargo")){
+            $doc->get_value( "date_embargo" ) =~ /^([0-9]{4})/;
+            $pub_year = $1 if $1 > $pub_year; #highest available pub_year value
+        }
+    }
+
+    $publicationYear = $xml->create_data_element( "publicationYear", $pub_year ) if defined $pub_year;
+
+    return $publicationYear;
+};
+
+#################################################################
+# descriptions this is derived from the eprint.abstract
+# If recollect is in place from eprint.collection_method, eprint.provenance too
+# https://schema.datacite.org/meta/kernel-4.0/metadata.xsd#descriptions
+
+#####################
+# descriptionTypes:
+#
+# Abstract
+# Methods
+# SeriesInformation
+# TableOfContents
+# TechnicalInfo
+# Other
+#
+#####################
 
 $c->{datacite_mapping_abstract} = sub {
-    my($xml, $dataobj, $repo, $value) = @_;
+    my($xml, $dataobj, $repo) = @_;
 
-    my $abstract = $dataobj->get_value("abstract");
-    my $description = $xml->create_element("descriptions");
+    my $descriptions = undef;
+    
+    if($dataobj->exists_and_set("abstract")){
 
-    $description->appendChild($xml->create_data_element("description", $abstract, "xml:lang"=>"en-us", descriptionType=>"Abstract"));
+        $descriptions = $xml->create_element("descriptions");
+        $descriptions->appendChild($xml->create_data_element("description", $dataobj->get_value("abstract"), 
+                "xml:lang"=>$repo->get_language->get_id, 
+                descriptionType=>"Abstract"));
+    }
 
     if ($dataobj->exists_and_set("collection_method")) {
-        my $collection = $dataobj->get_value("collection_method");
-        $description->appendChild($xml->create_data_element("description", $collection, descriptionType =>"Methods"));
+        $descriptions = $xml->create_element("descriptions") if(!defined $descriptions);
+        $descriptions->appendChild($xml->create_data_element("description", $dataobj->get_value("collection_method"),
+                "xml:lang"=>$repo->get_language->get_id, 
+                descriptionType =>"Methods"));
     }
 
     if ($dataobj->exists_and_set("provenance")) {
-        my $processing = $dataobj->get_value("provenance");
-        $description->appendChild($xml->create_data_element("description", $processing, descriptionType =>"Methods"));
+        $descriptions = $xml->create_element("descriptions") if(!defined $descriptions);
+        $descriptions->appendChild($xml->create_data_element("description", $dataobj->get_value("provenance"),
+                "xml:lang"=>$repo->get_language->get_id, 
+                descriptionType =>"TechnicalInfo"));
     }
 
-
-
-
-    return $description# of somedescription
+    return $descriptions;
 };
 
-
-
-
-
-
-$c->{datacite_mapping_date} = sub {
-	my ( $xml, $dataobj, $repo, $value ) = @_;
-  $dataobj->get_value( "date" ) =~ /^([0-9]{4})/;
-  return $xml->create_data_element( "publicationYear", $1 ) if $1;
-
-};
-
+#################################################################
+# subjects this is derived from the eprint.keywords
+# https://schema.datacite.org/meta/kernel-4.0/metadata.xsd#subjects
 
 $c->{datacite_mapping_keywords} = sub {
-    my($xml, $dataobj, $repo, $value) = @_;
+    my($xml, $dataobj, $repo) = @_;
 
+    my $subjects = undef; 
     if ($dataobj->exists_and_set("keywords")) {
         my $subjects = $xml->create_element("subjects");
         my $keywords = $dataobj->get_value("keywords");
+        # keyswords as a multiple field
         if (ref($keywords) eq "ARRAY") {
             foreach my $keyword(@$keywords) {
-                $subjects->appendChild($xml->create_data_element("subject", $keyword, "xml:lang"=>"en-us"));
+                $subjects->appendChild($xml->create_data_element("subject", $keyword,
+                        "xml:lang"=>$repo->get_language->get_id));
             }
-            return $subjects
-
-        } else {
-            $subjects->appendChild($xml->create_data_element("subject", $keywords, "xml:lang"=>"en-us"));
-            return $subjects
+        #or a block of text
+        }else{
+            $subjects->appendChild($xml->create_data_element("subject", $keywords,
+                    "xml:lang"=>$repo->get_language->get_id));
         }
     }
+    return $subjects
 };
 
+#################################################################
+# geoLocations this is derived from the eprint.geographic_cover 
+# and/or eprint.bounding_box (requires recollect)
+# https://schema.datacite.org/meta/kernel-4.0/metadata.xsd#subjects
+
 $c->{datacite_mapping_geographic_cover} = sub {
-    my($xml, $dataobj, $repo, $value) = @_;
+    my($xml, $dataobj, $repo) = @_;
 
-    my $geo_locations = $xml->create_element("geoLocations");
-    my $geo_location = $xml->create_element("geoLocation");
+    my $geo_locations = undef;
+
     if ($dataobj->exists_and_set("geographic_cover")) {
-
-        #
-        #Create XML elements
+        $geo_locations = $xml->create_element("geoLocations");
+        $geo_locations->appendChild(my $geo_location = $xml->create_element("geoLocation"));
 
         # Get value of geographic_cover field and append to $geo_location XML element
         my $geographic_cover = $dataobj->get_value("geographic_cover");
         $geo_location->appendChild($xml->create_data_element("geoLocationPlace", $geographic_cover));
 
-        #
+    }
+
+    if($dataobj->exists_and_set("bounding_box")){
+        if(!defined $geo_locations){
+            $geo_locations = $xml->create_element("geoLocations");
+            $geo_locations->appendChild(my $geo_location = $xml->create_element("geoLocation"));
+        }
+
         # Get values of bounding box
         my $west = $dataobj->get_value("bounding_box_west_edge");
         my $east = $dataobj->get_value("bounding_box_east_edge");
         my $south = $dataobj->get_value("bounding_box_south_edge");
         my $north = $dataobj->get_value("bounding_box_north_edge");
 
-        #
         # Check to see
-        # if $north, $south, $east, or $west values are defined
-        if (defined $north && defined $south && defined $east && defined $west) {#
+        # if $north, $south, $east, and $west values are defined
+        if (defined $north && defined $south && defined $east && defined $west) {
             #Created $geo_location_box XML element
-            my $geo_location_box = $xml->create_element("geoLocationBox");#
+            my $geo_location_box = $xml->create_element("geoLocationBox");
             #If $long / lat is defined, created XML element with the appropriate value
             $geo_location_box->appendChild($xml->create_data_element("westBoundLongitude", $west));
             $geo_location_box->appendChild($xml->create_data_element("eastBoundLongitude", $east));
             $geo_location_box->appendChild($xml->create_data_element("southBoundLatitude", $south));
-            $geo_location_box->appendChild($xml->create_data_element("northBoundLatitude", $north));#
+            $geo_location_box->appendChild($xml->create_data_element("northBoundLatitude", $north));
             #Append child $geo_location_box XML element to parent $geo_location XML element
+            if(!defined $geo_locations){
+                $geo_locations = $xml->create_element("geoLocations");
+            }
+            $geo_locations->appendChild(my $geo_location = $xml->create_element("geoLocation"));
             $geo_location->appendChild($geo_location_box);
         }
-        #Append child $geo_location XML element to parent $geo_locations XML element
-        $geo_locations->appendChild($geo_location);
-        #Append $geo_locations XML element to XML document# $entry - > appendChild($geo_locations);
     }
 
     return $geo_locations;
 };
 
+#################################################################
+# fundingReferences this is derived from the eprint.funders and eprint.projects
+# Possibly also eprint.grant (recollect) or a compound eprint.project (rioxx2)
+# https://schema.datacite.org/meta/kernel-4.0/metadata.xsd#fundingReferences
+
 $c->{datacite_mapping_funders} = sub {
-    my($xml, $dataobj, $repo, $value) = @_;
+    my($xml, $dataobj, $repo) = @_;
 
-
+    ##############################
+    # If at all possible we do this:
     #
-    # if ($repo - >can_call("datacite_custom_funder")) {#
-    #     return $repo - > call("datacite_custom_funder", $xml, $dataobj);#
-    # }
+    # funders => funderName [mandatory]
+    # projects => awardTitle
+    # grant -> awardNumber
+    # funder_id => funderIdentifier
 
+    #Funders and projects are default eprints field, both are multiple
     my $funders = $dataobj->get_value("funders");
-    my $grant = $dataobj->get_value("grant");
     my $projects = $dataobj->get_value("projects");
+
+    my $fundingReferences = undef;
     if ($dataobj->exists_and_set("funders")) {
-        my $thefunders = $xml->create_element("fundingReferences");
-        my $author = $xml->create_element("fundingReference");
-        foreach my $funder(@$funders) {
-            foreach my $project(@$projects) {
-                $author->appendChild($xml->create_data_element("funderName", $funder));
-                $author->appendChild($xml->create_data_element("awardNumber", $grant));
+        my $i=0;
+        $fundingReferences = $xml->create_element("fundingReferences");
+        foreach my $funderName(@$funders) {
+            $fundingReferences->appendChild(my $fundingReference = $xml->create_element("fundingReference"));
+            $fundingReference->appendChild($xml->create_data_element("funderName", $funderName));
+            if($dataobj->exists_and_set("projects")){
+                if(ref($projects) =~ /ARRAY/) {
+                    my $project = $projects->[scalar(@$projects)-1];
+                    if(defined $projects->[$i]){
+                        $project = $projects->[$i];
+                    }
+                    $fundingReference->appendChild($xml->create_data_element("awardTitle", $project));
+                }else{
+                    $fundingReference->appendChild($xml->create_data_element("awardTitle", $projects));
+                }
             }
-            $thefunders->appendChild($author);
+
+            #grants is added by recollect if present
+            if($dataobj->exists_and_set("grant")) {
+                my $grants = $dataobj->get_value("grant");
+                #Just in case it has been configured as multiple
+                if(ref($grants) =~ /ARRAY/) {
+                    my $grant = $grants->[scalar(@$grants)-1];
+                    if(defined $grants->[$i]){
+                        $grant = $grants->[$i];
+                    }
+                    $fundingReference->appendChild($xml->create_data_element("awardNumber", $grant));
+                }else{
+                    $fundingReference->appendChild($xml->create_data_element("awardNumber", $grants));
+                }
+            }
         }
-        return $thefunders;
-    }
+    } 
+
+    #If we have the funder data in the ioxx2 format. 
+    #This will be preferred if present (as should have been derived from the thers anyway
+    #TODO keep grant if present?
+    if ($dataobj->exists_and_set("rioxx2_project_input")) {
+        my $i=0;
+        $fundingReferences = $xml->create_element("fundingReferences");
+        foreach my $project(@{$dataobj->value("rioxx2_project_input")}) {
+            $fundingReferences->appendChild(my $fundingReference = $xml->create_element("fundingReference"));
+            $fundingReference->appendChild($xml->create_data_element("funderName", $project->{funder_name}));
+            $fundingReference->appendChild($xml->create_data_element("awardTitle", $project->{project}));
+            $fundingReference->appendChild($xml->create_data_element("funderId", $project->{funder_id}));
+        }
+    } 
+
+    return $fundingReferences;
 };
 
-
+# TODO sort this one out too
 
 $c->{datacite_mapping_rights_from_docs} = sub {
     my ( $xml, $dataobj, $repo ) = @_;
@@ -234,11 +396,11 @@ $c->{datacite_mapping_rights_from_docs} = sub {
 
         my $license = $doc->get_value("license");
         my $content = $doc->get_value("content");
-	#This doc is the license (for docs that have licese == attached
-	if($content eq "licence"){
-		$attached_licence = $doc->url;
-		next;
-	}
+	    #This doc is the license (for docs that have licese == attached
+	    if($content eq "licence"){
+		    $attached_licence = $doc->url;
+		    next;
+	    }
 
         if(EPrints::Utils::is_set($license) && $license ne "attached") {
 
@@ -260,8 +422,7 @@ $c->{datacite_mapping_rights_from_docs} = sub {
     	if(EPrints::Utils::is_set($license) && $license eq "attached") {
         	$rightsList->appendChild($xml->create_data_element("rights", $repo->phrase("licenses_typename_attached"), rightsURI => $attached_licence));
 
-	}
-
+	    }
     }
 
     return $rightsList;
@@ -290,4 +451,58 @@ $c->{datacite_mapping_repo_link} = sub {
 
     return $relatedIdentifiers;
 
+};
+
+
+$c->{validate_datacite} = sub
+{
+	my( $eprint, $repository ) = @_;
+
+	my $xml = $repository->xml();
+
+	my @problems = ();
+
+    #NEED CREATORS
+	if( !$eprint->is_set( "creators" ) && 
+		!$eprint->is_set( "corp_creators" ) )
+	{
+		my $creators = $xml->create_element( "span", class=>"ep_problem_field:creators" );
+		my $corp_creators = $xml->create_element( "span", class=>"ep_problem_field:corp_creators" );
+
+		push @problems, $repository->html_phrase( 
+				"datacite_validate:need_creators_or_corp_creators",
+				creators=>$creators,
+				corp_creators=>$corp_creators );
+	}
+
+    #NEED CREATORS
+	if( !$eprint->is_set( "title" ) )
+	{
+		my $title = $xml->create_element( "span", class=>"ep_problem_field:title" );
+
+		push @problems, $repository->html_phrase( 
+				"datacite_validate:need_title",
+				title=>$title );
+	}
+
+	if( !$eprint->is_set( "publisher" ) )
+	{
+		my $publisher = $xml->create_element( "span", class=>"ep_problem_field:publisher" );
+        my $default_publisher = $repository->make_text( $repository->get_conf("datacitedoi","publisher") );
+		push @problems, $repository->html_phrase( 
+				"datacite_validate:need_publisher",
+				publisher=>$publisher,
+                default_publisher => $default_publisher);
+	}
+
+	if( !$eprint->is_set( "date" ) && (!$eprint->is_set( "date_type" ) || $eprint->value( "date_type" ) eq "published") )
+	{
+		my $dates = $xml->create_element( "span", class=>"ep_problem_field:dates" );
+
+		push @problems, $repository->html_phrase( 
+				"datacite_validate:need_published_year",
+				dates=>$dates );
+	}
+
+	return( @problems );
 };
