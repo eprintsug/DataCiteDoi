@@ -32,6 +32,9 @@ This config file contains all the configurable settings for the plugin, see comm
 $c->{plugins}{"Export::DataCiteXML"}{params}{disable} = 0;
 $c->{plugins}{"Event::DataCiteEvent"}{params}{disable} = 0;
 
+# Regex to match pre production servers
+# $c->{datacitedoi}{test_host_regex} = 'dev|test|preprod';
+
 # which field to use for the doi
 $c->{datacitedoi}{eprintdoifield} = "id_number";
 
