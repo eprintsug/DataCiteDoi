@@ -61,8 +61,8 @@ sub output_dataobj
     
     foreach my $field ( $dataobj->{dataset}->get_fields ){
             my $mapping_fn = "datacite_mapping_".$field->get_name;
-            if($repo->can_call($mapping_fn) && $dataobj->exists_and_set($field->get_name)){
-                    my $mapped_element = $repo->call( $mapping_fn, $xml, $dataobj, $repo, $dataobj->value($field->get_name) );
+            if($repo->can_call($mapping_fn)){
+                    my $mapped_element = $repo->call( $mapping_fn, $xml, $dataobj, $repo );
                     $entry->appendChild( $mapped_element ) if(defined $mapped_element);
             }
      }
