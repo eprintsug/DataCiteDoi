@@ -472,8 +472,8 @@ $c->{validate_datacite} = sub
 		if (hostname =~ $c->{datacitedoi}{test_host_regex}) {
 			push @problems, $repository->html_phrase(
 				"datacite_validate:doi_prefix_mismatch",
-				match_regexp=>$repo->get_conf("datacitedoi", "test_host_regex"),
-				configured_doi_prefix=>$repo->get_conf("datacitedoi", "prefix"),
+				match_regexp=>$repository->get_conf("datacitedoi", "test_host_regex"),
+				configured_doi_prefix=>$repository->get_conf("datacitedoi", "prefix"),
 			);
 		}
 	}
