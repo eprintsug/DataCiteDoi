@@ -93,32 +93,37 @@
 
 
 
-<!--licenses for uri-->
-<epp:phrase id="licenses_uri_cc_by_nc_nd">http://creativecommons.org/licenses/by-nc-nd/3.0/</epp:phrase>
-<epp:phrase id="licenses_uri_cc_by">http://creativecommons.org/licenses/by/3.0/</epp:phrase>
-<epp:phrase id="licenses_uri_cc_by_nc_sa">http://creativecommons.org/licenses/by-nc-sa/3.0/</epp:phrase>
-<epp:phrase id="licenses_uri_cc_by_nc">http://creativecommons.org/licenses/by-nc/3.0/</epp:phrase>
-<epp:phrase id="licenses_uri_cc_by_nd">http://creativecommons.org/licenses/by-nd/3.0/</epp:phrase>
-<epp:phrase id="licenses_uri_cc_by_sa">http://creativecommons.org/licenses/by-sa/3.0/</epp:phrase>
+    <!--licenses for uri-->
+    <epp:phrase id="licenses_uri_cc_by_nc_nd">http://creativecommons.org/licenses/by-nc-nd/3.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by">http://creativecommons.org/licenses/by/3.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_nc_sa">http://creativecommons.org/licenses/by-nc-sa/3.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_nc">http://creativecommons.org/licenses/by-nc/3.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_nd">http://creativecommons.org/licenses/by-nd/3.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_sa">http://creativecommons.org/licenses/by-sa/3.0/</epp:phrase>
 
-<epp:phrase id="licenses_uri_cc_by_nc_nd_4">http://creativecommons.org/licenses/by-nc-nd/4.0/</epp:phrase>
-<epp:phrase id="licenses_uri_cc_by_4">http://creativecommons.org/licenses/by/4.0/</epp:phrase>
-<epp:phrase id="licenses_uri_cc_by_nc_sa_4">http://creativecommons.org/licenses/by-nc-sa/4.0/</epp:phrase>
-<epp:phrase id="licenses_uri_cc_by_nc_4">http://creativecommons.org/licenses/by-nc/4.0/</epp:phrase>
-<epp:phrase id="licenses_uri_cc_by_nd_4">http://creativecommons.org/licenses/by-nd/4.0/</epp:phrase>
-<epp:phrase id="licenses_uri_cc_by_sa_4">http://creativecommons.org/licenses/by-sa/4.0/</epp:phrase>
-<epp:phrase id="licenses_uri_attached">Licence document attached</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_nc_nd_4">http://creativecommons.org/licenses/by-nc-nd/4.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_4">http://creativecommons.org/licenses/by/4.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_nc_sa_4">http://creativecommons.org/licenses/by-nc-sa/4.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_nc_4">http://creativecommons.org/licenses/by-nc/4.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_nd_4">http://creativecommons.org/licenses/by-nd/4.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_sa_4">http://creativecommons.org/licenses/by-sa/4.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_attached">Licence document attached</epp:phrase>
 
-<epp:phrase id="licenses_uri_cc_public_domain">http://creativecommons.org/licenses/publicdomain/</epp:phrase>
-<epp:phrase id="licenses_uri_attached">attached</epp:phrase>
-<epp:phrase id="licenses_uri_mit">http://opensource.org/licenses/MIT</epp:phrase>
-<epp:phrase id="licenses_uri_gnu_gpl_3">http://www.gnu.org/licenses/gpl.html</epp:phrase>
-<epp:phrase id="licenses_uri_gnu_lgpl_3">http://www.gnu.org/licenses/lgpl.html</epp:phrase>
-<epp:phrase id="licenses_uri_apache_2">http://www.apache.org/licenses/LICENSE-2.0</epp:phrase>
-<epp:phrase id="licenses_uri_uor">http://researchdata.reading.ac.uk/licence_restricted_data.html</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_public_domain">http://creativecommons.org/licenses/publicdomain/</epp:phrase>
+    <epp:phrase id="licenses_uri_attached">attached</epp:phrase>
+    <epp:phrase id="licenses_uri_mit">http://opensource.org/licenses/MIT</epp:phrase>
+    <epp:phrase id="licenses_uri_gnu_gpl_3">http://www.gnu.org/licenses/gpl.html</epp:phrase>
+    <epp:phrase id="licenses_uri_gnu_lgpl_3">http://www.gnu.org/licenses/lgpl.html</epp:phrase>
+    <epp:phrase id="licenses_uri_apache_2">http://www.apache.org/licenses/LICENSE-2.0</epp:phrase>
+    <epp:phrase id="licenses_uri_uor">http://researchdata.reading.ac.uk/licence_restricted_data.html</epp:phrase>
 
 
+    <epp:phrase id="datacite_validate:need_creators_or_corp_creators"><p>There are no suitable values for the mandatory field <strong>datacite:Creator</strong>. Please supply <epc:pin name="creators">creators</epc:pin> or <epc:pin name="corp_creators">corp_creators</epc:pin> before coining a DOI.</p></epp:phrase>
+    <epp:phrase id="datacite_validate:need_title"><p>There are no suitable values for the mandatory field <strong>datacite:Title</strong>. Please supply a <epc:pin name="title">title</epc:pin> before coining a DOI.</p></epp:phrase>
+    <!--    <epp:phrase id="datacite_validate:need_publisher"><p>There are no suitable values for the mandatory field <strong>datacite:Publisher</strong>. We will use the default publisher set in the datacite configuration <strong>"<epc:pin name="default_publisher"/>"</strong>.</p><p>If you would prefer not to use this then pleae supply an alternative <epc:pin name="publisher">publisher</epc:pin> before coining a DOI.</p></epp:phrase> -->
+    <epp:phrase id="datacite_validate:need_publisher"><p>There are no suitable values for the mandatory field <strong>datacite:Publisher</strong>. Please supply <epc:pin name="publisher">publisher</epc:pin> before coining a DOI.</p></epp:phrase>
 
+    <epp:phrase id="datacite_validate:need_published_year"><p>There are no suitable values for the mandatory field <strong>datacite:PublicationYear</strong>. Please supply a <epc:pin name="dates">publication date</epc:pin> before coining a DOI.</p></epp:phrase>
 
 
 </epp:phrases>

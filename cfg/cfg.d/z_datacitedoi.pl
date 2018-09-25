@@ -2,7 +2,7 @@
 $c->{plugins}{"Export::DataCiteXML"}{params}{disable} = 0;
 $c->{plugins}{"Event::DataCiteEvent"}{params}{disable} = 0;
 
-# which field to use for the doi
+#which field do use for the doi
 $c->{datacitedoi}{eprintdoifield} = "id_number";
 
 #for xml:lang attributes in XML
@@ -25,9 +25,13 @@ $c->{datacitedoi}{eprintstatus} = {inbox=>0,buffer=>1,archive=>1,deletion=>0};
 # doi = {prefix}/{repoid}/{eprintid}
 $c->{datacitedoi}{prefix} = "10.5072";
 $c->{datacitedoi}{repoid} = $c->{host};
-$c->{datacitedoi}{apiurl} = "https://mds.test.datacite.org";
+$c->{datacitedoi}{apiurl} = "https://mds.test.datacite.org/";
 $c->{datacitedoi}{user} = "USER";
 $c->{datacitedoi}{pass} = "PASS";
+
+# Priviledge required to be able to mint DOIs
+# See https://wiki.eprints.org/w/User_roles.pl for role and privilege configuration
+$c->{datacitedoi}{minters} = "eprint/edit:editor";
 
 # datacite requires a Publisher
 # The name of the entity that holds, archives, publishes,
@@ -45,23 +49,28 @@ $c->{datacitedoi}{schemaLocation} = $c->{datacitedoi}{xmlns}." http://schema.dat
 # need to map eprint type (article, dataset etc) to ResourceType
 # Controled list http://schema.datacite.org/meta/kernel-2.2/doc/DataCite-MetadataKernel_v2.2.pdf
 # where v is the ResourceType and a is the resourceTypeGeneral
+#$c->{datacitedoi}{typemap}{book_section} = {v=>'BookSection',a=>'Text'};
 $c->{datacitedoi}{typemap}{article} = {v=>'Article',a=>'Text'};
-$c->{datacitedoi}{typemap}{book_section} = {v=>'BookSection',a=>'Text'};
 $c->{datacitedoi}{typemap}{monograph} = {v=>'Monograph',a=>'Text'};
 $c->{datacitedoi}{typemap}{thesis} = {v=>'Thesis',a=>'Text'};
 $c->{datacitedoi}{typemap}{book} = {v=>'Book',a=>'Text'};
 $c->{datacitedoi}{typemap}{patent} = {v=>'Patent',a=>'Text'};
 $c->{datacitedoi}{typemap}{artefact} = {v=>'Artefact',a=>'PhysicalObject'};
-$c->{datacitedoi}{typemap}{performance} = {v=>'Performance',a=>'Event'};
+$c->{datacitedoi}{typemap}{exhibition} = {v=>'Exhibition',a=>'InteractiveResource'};
 $c->{datacitedoi}{typemap}{composition} = {v=>'Composition',a=>'Sound'};
+$c->{datacitedoi}{typemap}{performance} = {v=>'Performance',a=>'Event'};
 $c->{datacitedoi}{typemap}{image} = {v=>'Image',a=>'Image'};
+$c->{datacitedoi}{typemap}{video} = {v=>'Video',a=>'AudioVisual'};
+$c->{datacitedoi}{typemap}{audio} = {v=>'Audio',a=>'Sound'};
+$c->{datacitedoi}{typemap}{dataset} = {v=>'Dataset',a=>'Dataset'};
 $c->{datacitedoi}{typemap}{experiment} = {v=>'Experiment',a=>'Text'};
 $c->{datacitedoi}{typemap}{teaching_resource} = {v=>'TeachingResourse',a=>'InteractiveResource'};
 $c->{datacitedoi}{typemap}{other} = {v=>'Misc',a=>'Collection'};
-$c->{datacitedoi}{typemap}{dataset} = {v=>'Dataset',a=>'Dataset'};
-$c->{datacitedoi}{typemap}{audio} = {v=>'Audio',a=>'Sound'};
-$c->{datacitedoi}{typemap}{video} = {v=>'Video',a=>'Film'};
+#For use with recollect
 $c->{datacitedoi}{typemap}{data_collection} = {v=>'Dataset',a=>'Dataset'};
+$c->{datacitedoi}{typemap}{collection} = {v=>'Collection',a=>'Collection'};
+
+
 ###########################
 #### DOI syntax config ####
 ###########################
