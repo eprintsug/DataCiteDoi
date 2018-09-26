@@ -72,7 +72,6 @@ sub datacite_doi
 
 
 sub datacite_request {
-  print STDERR "Performing DataCite request\n";
   my ($method, $url, $user_name, $user_pw, $content, $content_type) = @_;
 
   # build request
@@ -80,8 +79,6 @@ sub datacite_request {
     "Accept: application/xml",
     "Content-Type: $content_type"
   );
-  print STDERR "Build headers array\n";
-
   my $curl = new WWW::Curl::Easy;
 
   $curl->setopt(CURLOPT_FAILONERROR,1);
@@ -99,12 +96,8 @@ sub datacite_request {
   $curl->setopt(CURLOPT_WRITEDATA,$fileb);
 
 
-  print STDERR "Finished setting Curl options\n";
-
   # pass request and get a response back
   my $retcode = $curl->perform;
-
-  print STDERR "Network transaction complete\n";
 
   # Use response to determine HTTP status code
   $http_retcode    = $curl->getinfo(CURLINFO_HTTP_CODE);
@@ -117,9 +110,6 @@ sub datacite_request {
     $content = "An error happened: $http_prose $http_retcode (Curl error code $retcode)\n";
   }
 
-  print STDERR "Return code checked (Curl $retcode; HTTP $http_retcode), suitable message generated\n";
-
-  print STDERR "About to return() and leave datacite_request{}\n";
   return ($content, $http_retcode);
 }
 
