@@ -8,6 +8,13 @@ In order to use the DataCite API the plugin requires the following perl librarie
 
 ```
 use LWP;
+use LWP::Protocol::https;
+```
+
+For systems who's LWP::Protocol::https is older than 6.0.7 (https://metacpan.org/release/LWP-Protocol-https)
+WWW::Curl should be used instead.
+
+```
 use WWW::Curl;
 ```
 
@@ -31,6 +38,9 @@ This config file contains all the configurable settings for the plugin, see comm
 #Enable the plugin
 $c->{plugins}{"Export::DataCiteXML"}{params}{disable} = 0;
 $c->{plugins}{"Event::DataCiteEvent"}{params}{disable} = 0;
+
+# Regex to match pre production servers
+# $c->{datacitedoi}{test_host_regex} = 'dev|test|preprod';
 
 # which field to use for the doi
 $c->{datacitedoi}{eprintdoifield} = "id_number";

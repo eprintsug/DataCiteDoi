@@ -464,6 +464,23 @@ $c->{validate_datacite} = sub
 
 	my @problems = ();
 
+	# If this host is not production it should probably use a test endpoint.
+	# To prevent this check change the test_host_regex regex not to match hostname
+	# or ensure test_host_regex is undefined (as is the default)
+
+	my $test_regex = $repository->get_conf("datacitedoi", "test_host_regex");
+	if (defined $test_regex){
+		use Sys::Hostname;
+		my $doi_prefix = $repository->get_conf("datacitedoi", "prefix");
+
+		# Does this host match the regex? Is it using the test DOI prefix?
+		if ((hostname =~ $test_regex) && ("10.5072" != $doi_prefix)) {
+			push @problems, $repository->html_phrase(
+				"datacite_validate:doi_prefix_mismatch",
+			);
+		}
+	}
+
     #NEED CREATORS
 	if( !$eprint->is_set( "creators" ) && 
 		!$eprint->is_set( "corp_creators" ) )
@@ -477,7 +494,7 @@ $c->{validate_datacite} = sub
 				corp_creators=>$corp_creators );
 	}
 
-    #NEED CREATORS
+    #NEED TITLE
 	if( !$eprint->is_set( "title" ) )
 	{
 		my $title = $xml->create_element( "span", class=>"ep_problem_field:title" );
@@ -508,3 +525,4 @@ $c->{validate_datacite} = sub
 
 	return( @problems );
 };
+
