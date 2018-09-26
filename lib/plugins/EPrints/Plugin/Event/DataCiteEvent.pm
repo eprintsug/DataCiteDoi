@@ -8,7 +8,6 @@ package EPrints::Plugin::Event::DataCiteEvent;
 
 use EPrints::Plugin::Event;
 use LWP;
-use Crypt::SSLeay;
 use HTTP::Headers::Util;
 
 @ISA = qw( EPrints::Plugin::Event );
