@@ -8,12 +8,7 @@ package EPrints::Plugin::Event::DataCiteEvent;
 
 use EPrints::Plugin::Event;
 
-if (defined $repository->get_conf( "datacitedoi", "get_curl")) {
-  use WWW::Curl::Easy;
-} else {
-  use LWP;
-  use HTTP:Headers::Util;
-}
+# Network client libraries included below in datacite_request
 
 @ISA = qw( EPrints::Plugin::Event );
 
@@ -76,14 +71,17 @@ sub datacite_doi
 		return undef;
 }
 
-
 sub datacite_request {
   # Test if we want to be using curl; if we don't run the 'old' LWP code
   if (defined $repository->get_conf( "datacitedoi", "get_curl")) {
+    use WWW::Curl::Easy;
     return datacite_request_curl(@_);
   } else {
     my ($method, $url, $user_name, $user_pw, $content, $content_type) = @_;
  
+    use LWP;
+    use HTTP:Headers::Util;
+  
     # build request
     my $headers = HTTP::Headers->new(
       'Accept'  => 'application/xml',
