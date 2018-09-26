@@ -82,8 +82,8 @@ sub datacite_request {
   my $curl = new WWW::Curl::Easy;
 
   $curl->setopt(CURLOPT_FAILONERROR,1);
-  $curl->setopt(CURLOPT_HEADER,1); # when it works put this behind an 'if debug'
-  $curl->setopt(CURLOPT_VERBOSE, 1); # when it works put this behind an 'if debug'
+  # $curl->setopt(CURLOPT_HEADER,1);
+  # $curl->setopt(CURLOPT_VERBOSE, 1);
   $curl->setopt(CURLOPT_POST, 1);  # TODO: Make conditional on $method
   $curl->setopt(CURLOPT_URL, $url);
   $curl->setopt(CURLOPT_USERNAME, $user_name);
