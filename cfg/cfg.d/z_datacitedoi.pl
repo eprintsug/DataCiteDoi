@@ -32,6 +32,8 @@ $c->{datacitedoi}{apiurl} = "https://mds.test.datacite.org/";
 $c->{datacitedoi}{user} = "USER";
 $c->{datacitedoi}{pass} = "PASS";
 
+# Backend library used for connecting to API; defaults to LWP but can also be Curl.
+# $c->{datacitedoi}{use_curl} = "yes";
 
 # Priviledge required to be able to mint DOIs
 # See https://wiki.eprints.org/w/User_roles.pl for role and privilege configuration
