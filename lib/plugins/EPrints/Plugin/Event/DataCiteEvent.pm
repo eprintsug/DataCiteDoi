@@ -80,7 +80,7 @@ sub datacite_request {
     my ($method, $url, $user_name, $user_pw, $content, $content_type) = @_;
  
     use LWP;
-    use HTTP:Headers::Util;
+    use HTTP::Headers::Util;
   
     # build request
     my $headers = HTTP::Headers->new(
