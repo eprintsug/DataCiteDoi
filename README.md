@@ -18,6 +18,9 @@ WWW::Curl should be used instead.
 use WWW::Curl;
 ```
 
+If using WWW::Curl ensure $c->{datacitedoi}{use_curl} is defined.
+
+
 Installation
 -------------
 
