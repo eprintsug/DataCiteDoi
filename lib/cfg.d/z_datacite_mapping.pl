@@ -477,6 +477,8 @@ $c->{validate_datacite} = sub
 		if ((hostname =~ $test_regex) && ("10.5072" != $doi_prefix)) {
 			push @problems, $repository->html_phrase(
 				"datacite_validate:doi_prefix_mismatch",
+				match_regexp=> $xml->create_text_node("$test_regex"),
+				configured_doi_prefix=> $xml->create_text_node("$doi_prefix"),
 			);
 		}
 	}

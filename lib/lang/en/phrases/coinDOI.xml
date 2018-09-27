@@ -125,7 +125,8 @@
 
     <epp:phrase id="datacite_validate:need_published_year"><p>There are no suitable values for the mandatory field <strong>datacite:PublicationYear</strong>. Please supply a <epc:pin name="dates">publication date</epc:pin> before coining a DOI.</p></epp:phrase>
 
-    <epp:phrase id="datacite_validate:doi_prefix_mismatch"><p>Your server hostname matches test_host_regex but is not using the test DOI prefix of 10.5072.</p></epp:phrase>
+    <epp:phrase id="datacite_validate:doi_prefix_mismatch"><p>Your server hostname matches the preprod regex <strong><epc:pin name="match_regexp" textonly="yes" /></strong> but is not using the test DOI prefix - current prefix is <strong><epc:pin name="configured_doi_prefix" /></strong>.</p></epp:phrase>
+
 
 
 </epp:phrases>
