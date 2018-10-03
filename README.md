@@ -11,9 +11,10 @@ use LWP;
 use LWP::Protocol::https;
 ```
 
-For systems who's LWP::Protocol::https is older than 6.0.7
-(https://metacpan.org/release/LWP-Protocol-https) and connections will be made
-to SNI enabled servers WWW::Curl should be used instead.
+For systems who's
+[LWP::Protocol::https](https://metacpan.org/release/LWP-Protocol-https) is
+older than 6.0.7 and where connections will be made to SNI enabled servers
+WWW::Curl should be used instead.
 
 ```
 use WWW::Curl;
