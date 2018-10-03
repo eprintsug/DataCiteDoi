@@ -35,7 +35,7 @@ $c->{datacite_mapping_type} = sub {
         Service
         Software
         Sound
-        Text15
+        Text
         Workflow
         Other
     /];
@@ -399,7 +399,7 @@ $c->{datacite_mapping_rights_from_docs} = sub {
         my $content = $doc->get_value("content");
 
 	    # This doc is the license (for docs that have license == attached
-	    if($content eq "licence"){
+	    if ((defined $content) && ($content eq "licence")){
 		    $attached_licence = $doc->url;
 		    next;
 	    }
@@ -477,6 +477,8 @@ $c->{validate_datacite} = sub
 		if ((hostname =~ $test_regex) && ("10.5072" != $doi_prefix)) {
 			push @problems, $repository->html_phrase(
 				"datacite_validate:doi_prefix_mismatch",
+				match_regexp=> $xml->create_text_node("$test_regex"),
+				configured_doi_prefix=> $xml->create_text_node("$doi_prefix"),
 			);
 		}
 	}
