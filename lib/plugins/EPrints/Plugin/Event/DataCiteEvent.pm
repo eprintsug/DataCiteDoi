@@ -42,7 +42,15 @@ sub datacite_doi
 		my $user_pw = $repository->get_conf( "datacitedoi", "pass");
 
 		#register metadata;
-		my($response_content, $response_code) =  datacite_request("POST", $url."metadata", $user_name, $user_pw, $xml, "application/xml;charset=UTF-8");
+		my $response_content;
+		my $response_code;
+		# Test if we want to be using curl; if we don't run the 'old' LWP code
+		if (defined $repository->get_conf( "datacitedoi", "get_curl")) {
+			($response_content, $response_code) =  datacite_request_curl($url."metadata", $user_name, $user_pw, $xml, "application/xml;charset=UTF-8");
+		} else {
+			($response_content, $response_code) =  datacite_request("POST", $url."metadata", $user_name, $user_pw, $xml, "application/xml;charset=UTF-8");
+		}
+
 		if($response_code !~ /20(1|0)/){
 			$repository->log("Metadata response from datacite api: $response_code: $response_content");
 			$repository->log("BTW the \$doi was:\n$thisdoi");
@@ -56,7 +64,12 @@ sub datacite_doi
 			$repo_url.= $dataobj->internal_uri;
 		}
  		my $doi_reg = "doi=$thisdoi\nurl=".$repo_url;
-		($response_content, $response_code)= datacite_request("POST", $url."doi", $user_name, $user_pw, $doi_reg, "text/plain; charset=utf8");
+		# Test if we want to be using curl; if we don't run the 'old' LWP code
+		if (defined $repository->get_conf( "datacitedoi", "get_curl")) {
+			($response_content, $response_code)= datacite_request_curl($url."doi", $user_name, $user_pw, $doi_reg, "text/plain; charset=utf8");
+		} else {
+			($response_content, $response_code)= datacite_request("POST", $url."doi", $user_name, $user_pw, $doi_reg, "text/plain; charset=utf8");
+		}
 		if($response_code  !~ /20(1|0)/){
 			$repository->log("Registration response from datacite api: $response_code: $response_content");
 			$repository->log("BTW the \$doi_reg was:\n$doi_reg");
@@ -71,41 +84,36 @@ sub datacite_doi
 		return undef;
 }
 
+
 sub datacite_request {
-  # Test if we want to be using curl; if we don't run the 'old' LWP code
-  if (defined $repository->get_conf( "datacitedoi", "get_curl")) {
-    use WWW::Curl::Easy;
-    return datacite_request_curl(@_);
-  } else {
-    my ($method, $url, $user_name, $user_pw, $content, $content_type) = @_;
+  my ($method, $url, $user_name, $user_pw, $content, $content_type) = @_;
 
-    use LWP;
-    use HTTP::Headers::Util;
+  use LWP;
+  use HTTP::Headers::Util;
 
-    # build request
-    my $headers = HTTP::Headers->new(
-      'Accept'  => 'application/xml',
-      'Content-Type' => $content_type
-    );
+  # build request
+  my $headers = HTTP::Headers->new(
+    'Accept'  => 'application/xml',
+    'Content-Type' => $content_type
+  );
 
-    my $req = HTTP::Request->new(
-      $method => $url,
-      $headers, Encode::encode_utf8( $content )
-    );
-    $req->authorization_basic($user_name, $user_pw);
- 
-    # pass request to the user agent and get a response back
-    my $ua = LWP::UserAgent->new;
-    my $res = $ua->request($req);
- 
-    return ($res->content(),$res->code());
-  }
+  my $req = HTTP::Request->new(
+    $method => $url,
+    $headers, Encode::encode_utf8( $content )
+  );
+  $req->authorization_basic($user_name, $user_pw);
+
+  # pass request to the user agent and get a response back
+  my $ua = LWP::UserAgent->new;
+  my $res = $ua->request($req);
+
+  return ($res->content(),$res->code());
 }
 
 
 
 sub datacite_request_curl {
-  my ($method, $url, $user_name, $user_pw, $content, $content_type) = @_;
+  my ($url, $user_name, $user_pw, $content, $content_type) = @_;
 
   # build request
   my @myheaders = (
@@ -117,7 +125,7 @@ sub datacite_request_curl {
   $curl->setopt(CURLOPT_FAILONERROR,1);
   # $curl->setopt(CURLOPT_HEADER,1);
   # $curl->setopt(CURLOPT_VERBOSE, 1);
-  $curl->setopt(CURLOPT_POST, 1);  # TODO: Make conditional on $method
+  $curl->setopt(CURLOPT_POST, 1);
   $curl->setopt(CURLOPT_URL, $url);
   $curl->setopt(CURLOPT_USERNAME, $user_name);
   $curl->setopt(CURLOPT_PASSWORD, $user_pw);
@@ -135,17 +143,16 @@ sub datacite_request_curl {
   # Use response to determine HTTP status code
   $http_retcode    = $curl->getinfo(CURLINFO_HTTP_CODE);
 
-  # Ensure we return a useful (well, usable) message and error response
-  if ($retcode == 0) {
-    $content = "Received response: $response_body\n";
-  } else {
-    $http_prose = $curl->strerror($retcode);
-    $content = "An error happened: $http_prose $http_retcode (Curl error code $retcode)\n";
-  }
+#   # Ensure we return a useful (well, usable) message and error response
+#   if ($retcode == 0) {
+#     $content = "Received response: $response_body\n";
+#   } else {
+#     $http_prose = $curl->strerror($retcode);
+#     $content = "An error happened: $http_prose $http_retcode (Curl error code $retcode)\n";
+#   }
 
   return ($content, $http_retcode);
 }
-
 
 
 #RM lets do the DOI coining somewhere (reasonably) accessible
