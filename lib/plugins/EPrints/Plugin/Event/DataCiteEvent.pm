@@ -78,16 +78,16 @@ sub datacite_request {
     return datacite_request_curl(@_);
   } else {
     my ($method, $url, $user_name, $user_pw, $content, $content_type) = @_;
- 
+
     use LWP;
     use HTTP::Headers::Util;
-  
+
     # build request
     my $headers = HTTP::Headers->new(
       'Accept'  => 'application/xml',
       'Content-Type' => $content_type
     );
-    
+
     my $req = HTTP::Request->new(
       $method => $url,
       $headers, Encode::encode_utf8( $content )

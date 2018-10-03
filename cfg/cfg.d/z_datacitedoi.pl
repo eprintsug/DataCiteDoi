@@ -5,7 +5,7 @@ $c->{plugins}{"Event::DataCiteEvent"}{params}{disable} = 0;
 # Regex to match pre production servers
 # $c->{datacitedoi}{test_host_regex} = 'dev|test|preprod';
 
-#which field do use for the doi
+# which field to use for the doi
 $c->{datacitedoi}{eprintdoifield} = "id_number";
 
 #for xml:lang attributes in XML
@@ -32,7 +32,7 @@ $c->{datacitedoi}{apiurl} = "https://mds.test.datacite.org/";
 $c->{datacitedoi}{user} = "USER";
 $c->{datacitedoi}{pass} = "PASS";
 
-# Backend library used for connecting to API; defaults to LWP but can also be Curl.
+# Backend library used for connecting to API; defaults to LWP (configuration item unset) but can also be Curl (configuration item set).
 # $c->{datacitedoi}{use_curl} = "yes";
 
 # Priviledge required to be able to mint DOIs
