@@ -328,17 +328,19 @@ $c->{datacite_mapping_funders} = sub {
     # funder_id => funderIdentifier
 
     #Funders and projects are default eprints field, both are multiple
-    my $funders = $dataobj->get_value("funders");
-    my $projects = $dataobj->get_value("projects");
+    my $funders = undef;
+    my $projects = undef;
 
     my $fundingReferences = undef;
     if ($dataobj->exists_and_set("funders")) {
+        $funders = $dataobj->get_value("funders");
         my $i=0;
         $fundingReferences = $xml->create_element("fundingReferences");
         foreach my $funderName(@$funders) {
             $fundingReferences->appendChild(my $fundingReference = $xml->create_element("fundingReference"));
             $fundingReference->appendChild($xml->create_data_element("funderName", $funderName));
             if($dataobj->exists_and_set("projects")){
+	        $projects = $dataobj->get_value("projects");
                 if(ref($projects) =~ /ARRAY/) {
                     my $project = $projects->[scalar(@$projects)-1];
                     if(defined $projects->[$i]){
