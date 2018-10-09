@@ -167,7 +167,7 @@ $c->{datacite_mapping_date} = sub {
 
     my $publicationYear = undef;
     my $pub_year = undef;
-    if($dataobj->exists_and_set("date") && $dataobj->value("date_type") eq "published"){
+    if($dataobj->exists_and_set("date")) {
         $dataobj->get_value( "date" ) =~ /^([0-9]{4})/;
         $pub_year = $1;
     }
@@ -518,7 +518,7 @@ $c->{validate_datacite} = sub
                 default_publisher => $default_publisher);
 	}
 
-	if( !$eprint->is_set( "date" ) && (!$eprint->is_set( "date_type" ) || $eprint->value( "date_type" ) eq "published") )
+	if( !$eprint->is_set( "date" ) || !$eprint->is_set( "date_type" ) || ($eprint->value( "date_type" ) ne "published") )
 	{
 		my $dates = $xml->create_element( "span", class=>"ep_problem_field:dates" );
 
