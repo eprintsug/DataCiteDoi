@@ -59,23 +59,18 @@ sub output_dataobj
     }
     $entry->appendChild( $xml->create_data_element( "identifier", $thisdoi , identifierType=>"DOI" ) );
     
-    foreach my $field ( $dataobj->{dataset}->get_fields ){
-            my $mapping_fn = "datacite_mapping_".$field->get_name;
+    my $conf_hash_reference = $repo->{config};
+    foreach my $mapping_fn (keys %$conf_hash_reference){
+        # If this is a datacite_mapping configuration item (aka one of our subroutines)
+        if (index($mapping_fn, 'datacite_mapping_') == 0) {
+            # Value of $mapping_fn matches datacite_mapping_, so is probably a helper method
             if($repo->can_call($mapping_fn)){
                     my $mapped_element = $repo->call( $mapping_fn, $xml, $dataobj, $repo );
                     $entry->appendChild( $mapped_element ) if(defined $mapped_element);
             }
+        }
      }
      
-     # Add in our publisher from the config (Disabled, see #35)
-     # $entry->appendChild( $xml->create_data_element( "publisher", $repo->get_conf( "datacitedoi", "publisher") ) );
-    
-        # There is no field for rights at EPrints level so we derive rights from document
-        # metadata and as such we need to call our derivation routine outside the above loop
-        if($repo->can_call("datacite_mapping_rights_from_docs")){
-                    my $mapped_element = $repo->call( "datacite_mapping_rights_from_docs", $xml, $dataobj, $repo );
-                    $entry->appendChild( $mapped_element ) if(defined $mapped_element);
-            }
 ####### From here on in you can redefine datacite_mapping_[fieldname] sub routines in lib/cfg.d/zzz_datacite_mapping.pl  #######################
 
 
