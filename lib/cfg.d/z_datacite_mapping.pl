@@ -656,12 +656,12 @@ $c->{datacite_document_mapping_title} = sub {
     my $titles = undef;
     if( $eprint->exists_and_set( "title" ) )
     {
-        my $title = $eprint->render_value( "title" );
+        my $title = $eprint->value( "title" );
 
         # append content if available
         if( $dataobj->exists_and_set( "content" ) )
         {
-            $title .= " (" . $dataobj->render_value( "content" ) . ")";
+            $title .= " (" . $dataobj->value( "content" ) . ")";
         }
 
         $titles = $xml->create_element( "titles" );

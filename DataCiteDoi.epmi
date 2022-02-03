@@ -9,9 +9,9 @@
           <datasetid>document</datasetid>
           <filename>cfg.d/z_datacite_mapping.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>5ed90f042acaeeaf8544d50d88af40c1</hash>
+          <hash>a06f3539e5a33a38c991ceb374224600</hash>
           <hash_type>MD5</hash_type>
-          <filesize>32262</filesize>
+          <filesize>32248</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -127,7 +127,7 @@
         </file>
       </files>
       <mime_type>text/plain</mime_type>
-      <format>text</format>
+      <format>other</format>
       <main>static/style/auto/datacitedoi.css</main>
       <content>install</content>
     </document>
