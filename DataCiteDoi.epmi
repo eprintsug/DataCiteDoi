@@ -81,9 +81,9 @@
           <datasetid>document</datasetid>
           <filename>plugins/EPrints/DataCite/Utils.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>efb51198e4861c717e4b5b317f0b5f08</hash>
+          <hash>32aa88a5706549c55f16d56f3ec579e7</hash>
           <hash_type>MD5</hash_type>
-          <filesize>7373</filesize>
+          <filesize>7421</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -127,7 +127,7 @@
         </file>
       </files>
       <mime_type>text/plain</mime_type>
-      <format>other</format>
+      <format>text</format>
       <main>static/style/auto/datacitedoi.css</main>
       <content>install</content>
     </document>

@@ -2,6 +2,7 @@ package EPrints::DataCite::Utils;
 
 use LWP::UserAgent;
 use JSON;
+use Encode;
 
 use strict;
 
@@ -56,7 +57,7 @@ sub reserve_doi
     }
 
     my $xml = $dataobj->export( "DataCiteXML" );
-    $xml = MIME::Base64::encode_base64( $xml );
+    $xml = MIME::Base64::encode_base64( encode('utf-8', $xml ) );
 
     # build the content
     my $content = qq(
@@ -109,7 +110,7 @@ sub update_metadata
     my $datacite_url = URI->new( $repo->config( 'datacitedoi', 'apiurl' ) . "/dois/$doi" );   
 
     my $xml = $dataobj->export( "DataCiteXML" );
-    $xml = MIME::Base64::encode_base64( $xml );
+    $xml = MIME::Base64::encode_base64( encode('utf-8', $xml ) );
 
     my $content;
     if( defined $url )
