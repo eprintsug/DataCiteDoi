@@ -242,7 +242,7 @@ $c->add_dataset_trigger( "document", EP_TRIGGER_REMOVED, \&remove_doi );
         my $datasetid = $dataobj->get_dataset_id;
 
         # if document_dois is turned off, we don't need to worry about removing document dois
-        return if $datasetid = "document" && !$repository->get_conf( "datacitedoi", "document_dois" );
+        return if $datasetid eq "document" && !$repository->get_conf( "datacitedoi", "document_dois" );
 
         # do we have a DOI?
         my $doi_field = $repository->get_conf( "datacitedoi", $datasetid."doifield" );
