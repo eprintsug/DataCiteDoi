@@ -73,9 +73,9 @@
           <datasetid>document</datasetid>
           <filename>lang/en/phrases/coinDOI.xml</filename>
           <mime_type>application/xml</mime_type>
-          <hash>08fa27b72462100243e01dcc93a41c8e</hash>
+          <hash>e4e9fe7b1cd31413e28e27b0b96feaf8</hash>
           <hash_type>MD5</hash_type>
-          <filesize>19240</filesize>
+          <filesize>19239</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -127,7 +127,7 @@
         </file>
       </files>
       <mime_type>text/plain</mime_type>
-      <format>other</format>
+      <format>text</format>
       <main>static/style/auto/datacitedoi.css</main>
       <content>install</content>
     </document>

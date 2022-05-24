@@ -135,7 +135,7 @@
     <!-- ***DataCite DOI Manager Screen*** -->
     <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:title">DataCite DOI Manager</epp:phrase>
     <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:description">Manage DOIs for this record via DataCite</epp:phrase>
-    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:coin_doi:problems">Before you can mint a new DOI for this record, please resolved the following issues.</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:coin_doi:problems">Before you can mint a new DOI for this record, please resolve the following issues.</epp:phrase>
 
     <!-- DataObj Info -->
     <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:dataobj_doi"><epc:pin name="dataobj" /> DOI: <epc:pin name="doi" /></epp:phrase>
