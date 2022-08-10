@@ -511,7 +511,54 @@ $c->{datacite_mapping_funders} = sub {
         }
     } 
 
-    #If we have the funder data in the ioxx2 format. 
+    if ($dataobj->exists_and_set("funders_advanced")) {
+        $funders = $dataobj->get_value("funders_advanced");
+        my $i=-1;
+
+        $fundingReferences = $xml->create_element("fundingReferences");
+        foreach my $funder(@$funders) {
+            $i++;    
+            next if !defined $funder->{name};
+            $fundingReferences->appendChild(my $fundingReference = $xml->create_element("fundingReference"));
+            $fundingReference->appendChild($xml->create_data_element("funderName", $funder->{name}));
+
+            if( defined $funder->{id} )
+            {
+                $fundingReference->appendChild($xml->create_data_element("funderIdentifier", $funder->{id}, funderIdentifierType=>"Crossref Funder"));
+            }
+
+            if($dataobj->exists_and_set("projects")){
+	        $projects = $dataobj->get_value("projects");
+                if(ref($projects) =~ /ARRAY/) {
+                    my $project = $projects->[scalar(@$projects)-1];
+                    if(defined $projects->[$i]){
+                        $project = $projects->[$i];
+                    }
+                    $fundingReference->appendChild($xml->create_data_element("awardTitle", $project));
+                }else{
+                    $fundingReference->appendChild($xml->create_data_element("awardTitle", $projects));
+                }
+            }
+
+            #grants is added by recollect if present
+            if($dataobj->exists_and_set("grant")) {
+                my $grants = $dataobj->get_value("grant");
+                #Just in case it has been configured as multiple
+                if(ref($grants) =~ /ARRAY/) {
+                    my $grant = $grants->[scalar(@$grants)-1];
+                    if(defined $grants->[$i]){
+                        $grant = $grants->[$i];
+                    }
+                    $fundingReference->appendChild($xml->create_data_element("awardNumber", $grant));
+                }else{
+                    $fundingReference->appendChild($xml->create_data_element("awardNumber", $grants));
+                }
+            }
+        }
+    } 
+
+
+    #If we have the funder data in the rioxx2 format. 
     #This will be preferred if present (as should have been derived from the thers anyway
     #TODO keep grant if present?
     if ($dataobj->exists_and_set("rioxx2_project_input")) {
