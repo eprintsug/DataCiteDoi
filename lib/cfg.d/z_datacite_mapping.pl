@@ -524,7 +524,7 @@ $c->{datacite_mapping_funders} = sub {
 
             if( defined $funder->{id} )
             {
-                $fundingReference->appendChild($xml->create_data_element("funderIdentifier", $funder->{id}, funderIdentifierType=>"Crossref Funder"));
+                $fundingReference->appendChild($xml->create_data_element("funderIdentifier", $funder->{id}, funderIdentifierType=>"Crossref Funder ID"));
             }
 
             if($dataobj->exists_and_set("projects")){
@@ -568,7 +568,7 @@ $c->{datacite_mapping_funders} = sub {
             $fundingReferences->appendChild(my $fundingReference = $xml->create_element("fundingReference"));
             $fundingReference->appendChild($xml->create_data_element("funderName", $project->{funder_name}));
             $fundingReference->appendChild($xml->create_data_element("awardTitle", $project->{project}));
-            $fundingReference->appendChild($xml->create_data_element("funderIdentifier", $project->{funder_id}, funderIdentifierType=>"Crossref Funder"));
+            $fundingReference->appendChild($xml->create_data_element("funderIdentifier", $project->{funder_id}, funderIdentifierType=>"Crossref Funder ID"));
         }
     } 
 

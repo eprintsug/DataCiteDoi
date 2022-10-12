@@ -9,9 +9,9 @@
           <datasetid>document</datasetid>
           <filename>cfg.d/z_datacite_mapping.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>f6561f14114b20d14a7d32c160da72a6</hash>
+          <hash>6273adbea18c7a77d74fab0e39083496</hash>
           <hash_type>MD5</hash_type>
-          <filesize>34342</filesize>
+          <filesize>34348</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -147,7 +147,7 @@
       <content>coverimage</content>
     </document>
   </documents>
-  <version>3.2</version>
+  <version>3.2.1</version>
   <creators>
     <item>
       <name>
