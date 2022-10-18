@@ -865,13 +865,27 @@ $c->{validate_datacite_eprint} = sub
                 default_publisher => $default_publisher);
 	}
 
-	if( !$eprint->is_set( "date" ) || !$eprint->is_set( "date_type" ) || ($eprint->value( "date_type" ) ne "published") )
-	{
-		my $dates = $xml->create_element( "span", class=>"ep_problem_field:dates" );
+    my $no_pub_year = 1;
+    if( $eprint->exists_and_set( "date" ) && $eprint->exists_and_set( "date_type" ) && $eprint->value( "date_type" ) eq "published" )
+    {            
+        $no_pub_year = 0;
+    }
 
+    for my $doc ( $eprint->get_all_documents() )
+    {
+        if($doc->exists_and_set("date_embargo"))
+        {
+            $no_pub_year = 0;
+        }
+    }
+
+    if( $no_pub_year )
+    {
+		my $dates = $xml->create_element( "span", class=>"ep_problem_field:dates" );
 		push @problems, $repository->html_phrase( 
-				"datacite_validate:need_published_year",
-				dates=>$dates );
+	        "datacite_validate:need_published_year",
+		    dates=>$dates
+        );
 	}
 
 	# If we don't have a type or its not in our mapping, thats bad
@@ -931,14 +945,28 @@ $c->{validate_datacite_document} = sub
 				publisher=>$publisher,
                 default_publisher => $default_publisher);
 	}
+ 
+    my $no_pub_year = 1;
+    if( $eprint->exists_and_set( "date" ) && $eprint->exists_and_set( "date_type" ) && $eprint->value( "date_type" ) eq "published" )
+    {            
+        $no_pub_year = 0;
+    }
 
-	if( !$eprint->is_set( "date" ) || !$eprint->is_set( "date_type" ) || ($eprint->value( "date_type" ) ne "published") )
-	{
+    for my $doc ( $eprint->get_all_documents() )
+    {
+        if($doc->exists_and_set("date_embargo"))
+        {
+            $no_pub_year = 0;
+        }
+    }
+
+    if( $no_pub_year )
+    {
 		my $dates = $xml->create_element( "span", class=>"ep_problem_field:dates" );
-
 		push @problems, $repository->html_phrase( 
-				"datacite_validate:need_published_year",
-				dates=>$dates );
+	        "datacite_validate:need_published_year",
+		    dates=>$dates
+        );
 	}
 
 	# If we don't have a type or its not in our mapping, thats bad
