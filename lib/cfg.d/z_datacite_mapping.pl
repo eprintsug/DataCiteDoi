@@ -264,7 +264,8 @@ $c->{datacite_mapping_publication_year} = sub {
 
     my $publicationYear = undef;
     my $pub_year = undef;
-    if( $dataobj->exists_and_set( "date" ) && $dataobj->exists_and_set( "date_type" ) && $dataobj->value( "date_type" ) eq "published" ) {
+    if( $dataobj->exists_and_set( "date" ) && $dataobj->exists_and_set( "date_type" ) && $repo->call(["datacitedoi", "validate_date_type"], $repo, $dataobj ) )
+    {
         $dataobj->get_value( "date" ) =~ /^([0-9]{4})/;
         $pub_year = $1;
     }
@@ -280,6 +281,8 @@ $c->{datacite_mapping_publication_year} = sub {
 
     return $publicationYear;
 };
+
+
 
 ##################################################
 # resourceType this is derived from the eprint.type and the datacitedoi->{typemap} in cfg/cfg.d/z_datacite.pl
@@ -866,7 +869,7 @@ $c->{validate_datacite_eprint} = sub
 	}
 
     my $no_pub_year = 1;
-    if( $eprint->exists_and_set( "date" ) && $eprint->exists_and_set( "date_type" ) && $eprint->value( "date_type" ) eq "published" )
+    if( $eprint->exists_and_set( "date" ) && $eprint->exists_and_set( "date_type" ) && $repository->call(["datacitedoi", "validate_date_type"], $repository, $eprint ) )
     {            
         $no_pub_year = 0;
     }
@@ -982,3 +985,25 @@ $c->{validate_datacite_document} = sub
 	return( @problems );
 };
 
+$c->{datacitedoi}->{validate_date_type} = sub {
+
+    my( $repo, $eprint ) = @_;
+
+    return 1 if $eprint->value( "date_type" ) eq "published";
+    return 1 if $eprint->value( "date_type" ) eq "published_online";
+
+    # if this is a thesis, we might not have a published date
+    # but an awarded or completed date will do in most cases
+
+    my $thesis_date_types = $repo->get_conf( "datacitedoi", "thesis_date_types" );
+    if( defined $thesis_date_types )
+    {
+        if( $eprint->value( "type" ) eq "thesis" && 
+            ( grep $eprint->value( "date_type")  eq $_, @$thesis_date_types ) ) 
+        {
+            return 1; # we have date type acceptable for a thesis
+        }
+    }
+
+    return 0;
+};

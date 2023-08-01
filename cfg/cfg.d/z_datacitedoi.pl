@@ -9,6 +9,9 @@ $c->{datacitedoi}{document_dois} = 0;
 $c->{datacitedoi}{eprintdoifield} = "id_number";
 $c->{datacitedoi}{documentdoifield} = "id_number";
 
+# date types valid for thesis DOIs
+$c->{datacitedoi}{thesis_date_types} = [qw( awarded completed )];
+
 #for xml:lang attributes in XML
 $c->{datacitedoi}{defaultlangtag} = "en-GB";
 
