@@ -100,7 +100,9 @@ $c->{datacite_mapping_creators} = sub {
             if ($family eq '' && $given eq '') {
                 $creators->appendChild($author);
             } else {
-                $author->appendChild($xml->create_data_element("creatorName", $name_str));
+                $author->appendChild($xml->create_data_element("creatorName", $name_str,
+                    nameType => "Personal",
+                ));                        
             }
             if ($given eq '') {
                 $creators->appendChild($author);
