@@ -176,8 +176,8 @@ $c->{datacite_mapping_contributors} = sub {
 
     my $contributors = undef;
     
-    if($dataobj->exists_and_set("contributors")){
-
+    if($dataobj->exists_and_set("contributors"))
+    {
         $contributors = $xml->create_element("contributors");
 
         foreach my $c ( @{$dataobj->value("contributors")} )
@@ -202,7 +202,8 @@ $c->{datacite_mapping_contributors} = sub {
             if ($family eq '' && $given eq '') {
                 $contributors->appendChild($contributor);
             } else {
-                $contributor->appendChild($xml->create_data_element("contributorName", $name_str));
+                $contributor->appendChild($xml->create_data_element("contributorName", $name_str, nameType => "Personal"));
+
             }
             if ($given eq '') {
                 $contributors->appendChild($contributor);
@@ -214,6 +215,16 @@ $c->{datacite_mapping_contributors} = sub {
             } else {
                 $contributor->appendChild($xml->create_data_element("familyName", $family));
             }
+            if ($dataobj->exists_and_set("contributors_orcid")) {
+                if ($orcid eq '') {
+                    $contributors->appendChild($contributor);
+                } else {
+                    $contributor->appendChild($xml->create_data_element("nameIdentifier", $orcid, 
+                            schemeURI =>"http://orcid.org/", 
+                            nameIdentifierScheme=>"ORCID"));
+                }
+            }
+
             $contributors->appendChild($contributor);
         }
     }
