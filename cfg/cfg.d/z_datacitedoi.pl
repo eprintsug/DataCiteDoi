@@ -85,7 +85,7 @@ $c->{datacitedoi}{typemap}{audio} = {v=>'Audio',a=>'Sound'};
 $c->{datacitedoi}{typemap}{dataset} = {v=>'Dataset',a=>'Dataset'};
 $c->{datacitedoi}{typemap}{experiment} = {v=>'Experiment',a=>'Text'};
 $c->{datacitedoi}{typemap}{teaching_resource} = {v=>'Teaching Resource',a=>'InteractiveResource'};
-$c->{datacitedoi}{typemap}{other} = {v=>'Misc',a=>'Collection'};
+$c->{datacitedoi}{typemap}{other} = {v=>'Misc',a=>'Other'};
 #For use with recollect
 $c->{datacitedoi}{typemap}{data_collection} = {v=>'Dataset',a=>'Dataset'};
 $c->{datacitedoi}{typemap}{collection} = {v=>'Collection',a=>'Collection'};
