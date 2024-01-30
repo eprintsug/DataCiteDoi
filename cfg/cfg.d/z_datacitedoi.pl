@@ -61,11 +61,13 @@ $c->{datacitedoi}{publisher} = "EPrints Repo";
 $c->{datacitedoi}{xmlns} = "http://datacite.org/schema/kernel-4";
 # Try this instead:
 # $c->{datacitedoi}{schemaLocation} = $c->{datacitedoi}{xmlns}." ".$c->{datacitedoi}{xmlns}."/metadata.xsd";
-$c->{datacitedoi}{schemaLocation} = $c->{datacitedoi}{xmlns}." https://schema.datacite.org/meta/kernel-4.4/metadata.xsd";
+$c->{datacitedoi}{schemaLocation} = $c->{datacitedoi}{xmlns}." https://schema.datacite.org/meta/kernel-4.5/metadata.xsd";
 
-# Need to map eprint type (article, dataset etc) to DOI ResourceType
-# Controlled list https://schema.datacite.org/meta/kernel-4.4/doc/DataCite-MetadataKernel_v4.4.pdf
-# where v is the ResourceType and a is the resourceTypeGeneral
+# Need to map eprint type (article, dataset etc) to DOI ResourceType.
+# where 'v' is the (free-text) ResourceType and 'a' is the (controlled) resourceTypeGeneral detailed below as 'resourceType'.
+# Controlled list:
+# - Docs: https://datacite-metadata-schema.readthedocs.io/en/4.5/properties/resourcetype/
+# - Xsd:  https://schema.datacite.org/meta/kernel-4.5/include/datacite-resourceType-v4.xsd
 $c->{datacitedoi}{typemap}{article} = {v=>'Article',a=>'JournalArticle'};
 $c->{datacitedoi}{typemap}{book_section} = {v=>'Book Section',a=>'BookChapter'};
 $c->{datacitedoi}{typemap}{monograph} = {v=>'Monograph',a=>'Text'};
@@ -89,7 +91,9 @@ $c->{datacitedoi}{typemap}{data_collection} = {v=>'Dataset',a=>'Dataset'};
 $c->{datacitedoi}{typemap}{collection} = {v=>'Collection',a=>'Collection'};
 
 # Need to map contributor type to DOI contributorType
-# Controlled list https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf
+# Controlled list:
+# - Docs: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/contributorType/
+# - Xsd:  https://schema.datacite.org/meta/kernel-4.5/include/datacite-contributorType-v4.xsd
 $c->{datacitedoi}{contributormap}{'http://www.loc.gov/loc.terms/relators/MDC'} = 'ContactPerson';
 $c->{datacitedoi}{contributormap}{'http://www.loc.gov/loc.terms/relators/PRC'} = 'ContactPerson';
 $c->{datacitedoi}{contributormap}{'http://www.loc.gov/loc.terms/relators/COL'} = 'DataCollector';
@@ -107,7 +111,9 @@ $c->{datacitedoi}{contributormap}{'http://www.loc.gov/loc.terms/relators/CPH'} =
 $c->{datacitedoi}{contributormap}{'http://www.loc.gov/loc.terms/relators/SPN'} = 'Sponsor';
 
 # Need to map dates date type to DOI dateType
-# Controlled list https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf
+# Controlled list:
+# - Docs: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/dateType/
+# - Xsd:  https://schema.datacite.org/meta/kernel-4.5/include/datacite-dateType-v4.xsd
 $c->{datacitedoi}{datemap}{accepted} = 'Accepted';
 $c->{datacitedoi}{datemap}{submitted} = 'Submitted';
 
