@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="no" ?>
+<!DOCTYPE phrases SYSTEM "entities.dtd">
+
+<epp:phrases xmlns="http://www.w3.org/1999/xhtml" xmlns:epp="http://eprints.org/ep3/phrase" xmlns:epc="http://eprints.org/ep3/control">
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:coindoi:description">This will add a mint-DOI event to the event queue (i.e. Will not happen immediately)</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:coindoi:title">Mint DOI</epp:phrase>
+    <epp:phrase id="embargoed_until">.Embargoed until: <epc:pin name="embargo_date"/> </epp:phrase>
+
+
+    <!-- Messages -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:mintdoi">This item will have a DOI created shortly.</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:updatedoi">The metadata associated with this DOI will be updated shortly.</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:updateurl">The metadata and URL associated with this DOI will be updated shortly.</epp:phrase>
+
+<!--license-->
+
+
+
+    <epp:phrase id="licenses_typename_cc_by_nc_nd">no Creative Commons: Attribution-NonCommercial-No Derivative Works 3.0</epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by">Creative Commons: Attribution 3.0</epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_nc_sa">Creative Commons: Attribution-NonCommercial-Share Alike 3.0</epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_nc">Creative Commons: Attribution-NonCommercial 3.0</epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_nd">Creative Commons: Attribution-No Derivative Works 3.0</epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_sa">Creative Commons: Attribution-Share Alike 3.0</epp:phrase>
+
+    <epp:phrase id="licenses_typename_cc_by_nc_nd_4">Creative Commons: Attribution-NonCommercial-No Derivative Works 4.0</epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_4">Creative Commons: Attribution 4.0</epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_nc_sa_4">Creative Commons: Attribution-NonCommercial-Share Alike 4.0</epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_nc_4">Creative Commons: Attribution-NonCommercial 4.0</epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_nd_4">Creative Commons: Attribution-No Derivative Works 4.0</epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_sa_4">Creative Commons: Attribution-Share Alike 4.0</epp:phrase>
+
+    <epp:phrase id="licenses_typename_cc_public_domain">Creative Commons: Public Domain Dedication</epp:phrase>
+    <epp:phrase id="licenses_typename_gnu_gpl_3">Software: GNU GPL 3.0</epp:phrase>
+    <epp:phrase id="licenses_typename_gnu_lgpl_3">Software: GNU LGPL 3.0</epp:phrase>
+    <epp:phrase id="licenses_typename_mit">Software: MIT</epp:phrase>
+    <epp:phrase id="licenses_typename_apache_2">Software: Apache License 2.0</epp:phrase>
+
+    <epp:phrase id="licenses_typename_odc_odbl">Data: Open Database License (ODbL) (Attribution-Share Alike)</epp:phrase>
+    <epp:phrase id="licenses_typename_odc_by">Data: Open Data Commons Attribution License (Attribution)</epp:phrase>
+
+    <epp:phrase id="licenses_typename_uor">University of Reading Licence</epp:phrase>
+
+  <epp:phrase id="licenses_description_gnu_gpl_3"><a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License (Software)</a></epp:phrase>
+  <epp:phrase id="licenses_description_gnu_lgpl_3"><a href="http://www.gnu.org/licenses/lgpl-3.0.html">GNU Lesser General Public License (Software)</a></epp:phrase>
+    <epp:phrase id="licenses_description_mit"><a href="http://opensource.org/licenses/MIT">MIT License (MIT)</a></epp:phrase>
+    <epp:phrase id="licenses_description_apache_2"><a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></epp:phrase>
+    <epp:phrase id="licenses_description_uor">University of Reading Licence</epp:phrase>
+  <epp:phrase id="licenses_description_attached">Licence document attached</epp:phrase>
+
+    <epp:phrase id="licenses_typename_cc_by_nc_nd_img"><a href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><img src="/images/by-nc-nd.png" style="width: 100px;" title="Creative Commons: Attribution-NonCommercial-No Derivative Works 3.0"/></a></epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_img"><a href="http://creativecommons.org/licenses/by/3.0/"><img src="/images/by.png" style="width: 100px;" title="Creative Commons: Attribution 3.0"/></a></epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_nc_sa_img"><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/"><img src="/images/by-nc-sa.png" style="width: 100px;" title="Creative Commons: Attribution-NonCommercial-Share Alike 3.0"/></a></epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_nc_img"><a href="http://creativecommons.org/licenses/by-nc/3.0/"><img src="/images/by-nc.png" style="width: 100px;" title="Creative Commons: Attribution-NonCommercial 3.0"/></a></epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_nd_img"><a href="http://creativecommons.org/licenses/by-nd/3.0/"><img src="/images/by-nd.png" style="width: 100px;" alt="Creative Commons: Attribution-No Derivative Works 3.0" title="Creative Commons: Attribution-No Derivative Works 3.0"/></a></epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_sa_img"><a href="http://creativecommons.org/licenses/by-sa/3.0/"><img src="/images/by-sa.png" style="width: 100px;" title="Creative Commons: Attribution-Share Alike 3.0"/></a></epp:phrase>
+
+    <epp:phrase id="licenses_typename_cc_by_nc_nd_4_img"><a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img src="/images/by-nc-nd.png" style="width: 100px;" title="Creative Commons: Attribution-NonCommercial-No Derivative Works 4.0"/></a></epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_4_img"><a href="http://creativecommons.org/licenses/by/4.0/"><img src="/images/by.png" style="width: 100px;" title="Creative Commons: Attribution 4.0"/></a></epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_nc_sa_4_img"><a href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="/images/by-nc-sa.png" style="width: 100px;" title="Creative Commons: Attribution-NonCommercial-Share Alike 4.0"/></a></epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_nc_4_img"><a href="http://creativecommons.org/licenses/by-nc/4.0/"><img src="/images/by-nc.png" style="width: 100px;" title="Creative Commons: Attribution-NonCommercial 4.0"/></a></epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_nd_4_img"><a href="http://creativecommons.org/licenses/by-nd/4.0/"><img src="/images/by-nd.png" style="width: 100px;" alt="Creative Commons: Attribution-No Derivative Works 4.0" title="Creative Commons: Attribution-No Derivative Works 4.0"/></a></epp:phrase>
+    <epp:phrase id="licenses_typename_cc_by_sa_4_img"><a href="http://creativecommons.org/licenses/by-sa/4.0/"><img src="/images/by-sa.png" style="width: 100px;" title="Creative Commons: Attribution-Share Alike 4.0"/></a></epp:phrase>
+
+
+    <epp:phrase id="licenses_typename_cc_public_domain_img"><a href="http://creativecommons.org/licenses/publicdomain/"><img src="/images/publicdomain.png" style="width: 100px;" title="Creative Commons: Public Domain Dedication"/></a></epp:phrase>
+
+    <epp:phrase id="licenses_typename_gnu_gpl_img"><a href="http://www.gnu.org/licenses/gpl.html"><epc:phrase ref="licenses_description_gnu_lgpl_3"/></a></epp:phrase>
+    <epp:phrase id="licenses_typename_gnu_lgpl_img"><a href="http://www.gnu.org/licenses/lgpl.html"><epc:phrase ref="licenses_description_gnu_lgpl_3"/></a></epp:phrase>
+    <epp:phrase id="licenses_typename_gnu_gpl_3_img"><a href="http://www.gnu.org/licenses/gpl.html"><epc:phrase ref="licenses_description_gnu_gpl_3"/></a></epp:phrase>
+
+    <epp:phrase id="licenses_typename_gnu_lgpl_3_img"><a href="http://www.gnu.org/licenses/lgpl.html"><epc:phrase ref="licenses_description_gnu_lgpl_3"/></a></epp:phrase>
+
+    <epp:phrase id="licenses_typename_mit_img"><a href="http://opensource.org/licenses/MIT"><epc:phrase ref="licenses_description_mit"/></a></epp:phrase>
+
+    <epp:phrase id="licenses_typename_apache_2_img"><a href="http://www.apache.org/licenses/LICENSE-2.0"><epc:phrase ref="licenses_description_apache_2"/></a></epp:phrase>
+
+     <epp:phrase id="licenses_typename_uor_img"><a href="/uor_licence.html"><epc:phrase ref="licenses_description_uor"/></a></epp:phrase>
+
+
+<!--    <epp:phrase id="licenses_typename_attached_img"><a href="#" onclick="jQuery('#files_box_rdlicence &gt; div &gt; div').find('[id$=_meta_bar]').find('a').trigger('click'); return false;">Licence document attached to this item</a></epp:phrase> -->
+    <epp:phrase id="licenses_typename_attached_img"><a href="#" onclick="console.log(jQuery('#files_box_rdlicence &gt; div &gt; div a.ep_box_collapse_link:eq(1)').length); jQuery('#files_box_rdlicence &gt; div &gt; div a.ep_box_collapse_link:eq(1)').trigger('click'); return false;">Licence document attached to this item</a></epp:phrase>
+
+
+    <epp:phrase id="licenses_typename_attached">Licence document attached</epp:phrase>
+
+    <epp:phrase id="licenses_typename_cc_zero">licenses_typename_cc_zero</epp:phrase>
+
+    <epp:phrase id="licenses_typename_materialtransferagreement_img">Material Transfer Agreement</epp:phrase>
+
+    <epp:phrase id="licenses_typename_datasharingagreement_img">Data Sharing Agreement</epp:phrase>
+
+	<!-- empty license in case non set -->
+    <epp:phrase id="licenses_typename__img">License unspecified</epp:phrase>
+
+
+
+
+    <!--licenses for uri-->
+    <epp:phrase id="licenses_uri_cc_by_nc_nd">http://creativecommons.org/licenses/by-nc-nd/3.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by">http://creativecommons.org/licenses/by/3.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_nc_sa">http://creativecommons.org/licenses/by-nc-sa/3.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_nc">http://creativecommons.org/licenses/by-nc/3.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_nd">http://creativecommons.org/licenses/by-nd/3.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_sa">http://creativecommons.org/licenses/by-sa/3.0/</epp:phrase>
+
+    <epp:phrase id="licenses_uri_cc_by_nc_nd_4">http://creativecommons.org/licenses/by-nc-nd/4.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_4">http://creativecommons.org/licenses/by/4.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_nc_sa_4">http://creativecommons.org/licenses/by-nc-sa/4.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_nc_4">http://creativecommons.org/licenses/by-nc/4.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_nd_4">http://creativecommons.org/licenses/by-nd/4.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_cc_by_sa_4">http://creativecommons.org/licenses/by-sa/4.0/</epp:phrase>
+    <epp:phrase id="licenses_uri_attached">Licence document attached</epp:phrase>
+
+    <epp:phrase id="licenses_uri_cc_public_domain">http://creativecommons.org/licenses/publicdomain/</epp:phrase>
+    <epp:phrase id="licenses_uri_attached">attached</epp:phrase>
+    <epp:phrase id="licenses_uri_mit">http://opensource.org/licenses/MIT</epp:phrase>
+    <epp:phrase id="licenses_uri_gnu_gpl_3">http://www.gnu.org/licenses/gpl.html</epp:phrase>
+    <epp:phrase id="licenses_uri_gnu_lgpl_3">http://www.gnu.org/licenses/lgpl.html</epp:phrase>
+    <epp:phrase id="licenses_uri_apache_2">http://www.apache.org/licenses/LICENSE-2.0</epp:phrase>
+    <epp:phrase id="licenses_uri_uor">http://researchdata.reading.ac.uk/licence_restricted_data.html</epp:phrase>
+
+
+    <epp:phrase id="datacite_validate:need_creators_or_corp_creators"><p>There are no suitable values for the mandatory field <strong>datacite:Creator</strong>. Please supply <epc:pin name="creators">creators</epc:pin> or <epc:pin name="corp_creators">corp_creators</epc:pin> before minting a DOI.</p></epp:phrase>
+    <epp:phrase id="datacite_validate:need_title"><p>There are no suitable values for the mandatory field <strong>datacite:Title</strong>. Please supply a <epc:pin name="title">title</epc:pin> before minting a DOI.</p></epp:phrase>
+    <!--    <epp:phrase id="datacite_validate:need_publisher"><p>There are no suitable values for the mandatory field <strong>datacite:Publisher</strong>. We will use the default publisher set in the datacite configuration <strong>"<epc:pin name="default_publisher"/>"</strong>.</p><p>If you would prefer not to use this then pleae supply an alternative <epc:pin name="publisher">publisher</epc:pin> before coining a DOI.</p></epp:phrase> -->
+    <epp:phrase id="datacite_validate:need_publisher"><p>There are no suitable values for the mandatory field <strong>datacite:Publisher</strong>. Please supply <epc:pin name="publisher">publisher</epc:pin> before minting a DOI.</p></epp:phrase>
+
+    <epp:phrase id="datacite_validate:need_published_year"><p>There are no suitable values for the mandatory field <strong>datacite:PublicationYear</strong>. Please supply a <epc:pin name="dates">publication date</epc:pin> before minting a DOI.</p></epp:phrase>
+
+    <!-- Would be nice to hotlink the plugin typemap too -->
+    <epp:phrase id="datacite_validate:need_mapped_type"><p>Your eprint is either <epc:pin name="types">missing its type</epc:pin> or the type has no match in the plugin typemap.</p></epp:phrase>
+
+
+    <!-- ***DataCite DOI Manager Screen*** -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:title">DataCite DOI Manager</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:description">Manage DOIs for this record via DataCite</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:coin_doi:problems">Before you can mint a new DOI for this record, please resolve the following issues.</epp:phrase>
+
+    <!-- DataObj Info -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:dataobj_doi"><epc:pin name="dataobj" /> DOI: <epc:pin name="doi" /></epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:eprint_name">EPrint</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:document_name">Document</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:undefined">Unspecified</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:datacite_doi">DataCite DOI: <epc:pin name="doi" /></epp:phrase>
+
+
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:current_doi:doi">DOI:</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:current_doi:redirect">Redirects to:</epp:phrase>
+
+    <!-- Current DOI -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:current_doi:title">Current DOI</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:current_doi:redirect:self">This record: <epc:pin name="url"/></epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:current_doi:redirect:parent">Earlier version of this EPrint: <epc:pin name="url"/></epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:current_doi:redirect:non-datacite">Non-DataCite DOI: <epc:pin name="url"/></epp:phrase>
+
+
+    <!-- Available DOI -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:available_doi:title">Available DOI</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:available_doi:alert">This item already has a DOI assigned to it. It is not advisable to create new, unnecessary DOIs if a DOI already exists.</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:available_doi:doi">DOI:</epp:phrase> 
+
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:generated_doi:redirect">Redirects to:</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:generated_doi:redirect:self">This record: <epc:pin name="url"/></epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:generated_doi:redct:parent">Earlier version of this EPrint: <epc:pin name="url"/></epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:generated_doi:redirect:non-datacite">Non-DataCite DOI: <epc:pin name="url"/></epp:phrase>
+
+
+    <!-- Mint DOI -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:mint_doi">Mint</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:mintdoi:title">Mint DOI</epp:phrase>
+
+    <!-- Update DOI -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:update_doi">Update</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:updatedoi:title">Update Metadata</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:updateurl:title">Update Metadata &amp; URL</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:claim:title">Claim DOI</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:reclaim:title">Reclaim DOI</epp:phrase>#
+    
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:update_doi:timestamps">
+        <p>This DOI was originally created on <epc:pin name="registered" /></p>
+        <p>This DOI was last updated on <epc:pin name="updated" /></p>
+        <p>The metadata for this record on DataCite can be updated. This should only be used for correcting errors or adding additional files.</p></epp:phrase>
+
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:coin:claim:title">Claim DOI</epp:phrase>
+
+    <!-- Reserve DOI -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:reserve_doi:title">Reserve:</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:reserve_doi:desc"><p>Reserve this DOI, adding it as a draft DOI in DataCite.</p></epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:reservedoi:title">Reserve DOI</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:update_reservedoi:title">Update Reserved DOI</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:reserve_doi:reserved">This DOI was first reserved on <epc:pin name="reserved" /><p>It was last updated on <epc:pin name="updated"/></p></epp:phrase>
+
+    <!-- DataCite DOIs -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:datacite_dois:title">DataCite DOIs</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:datacite_dois:datacite_result">
+        <p><epc:pin name="title" /></p>
+        <p><epc:pin name="publisher" />, <epc:pin name="date" /></p>
+        <p>DOI: <epc:pin name="doi" /></p>
+    </epp:phrase>
+    <epp:phrase id="datacite_dois:claim_doi">Claim DOI</epp:phrase>
+
+    <!-- API Responses -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:datacite_dois:error_message"><p>DataCite Error Message, code: <epc:pin name="code"/>. Please contact the <a href="mailto:{$config{adminemail}}"><epc:phrase ref="archive_name" /> administration</a></p></epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:datacite_dois:no_results"><p>No records could be found on DataCite for the EPrint with title: <epc:pin name="title">title</epc:pin></p></epp:phrase>
+
+
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:data:title">DataCite XML</epp:phrase>
+
+    <!-- DataCite Dataset -->
+    <epp:phrase id="datasetname_datacite">DataCite</epp:phrase>
+    <epp:phrase id="datasethelp_datacite">Stores DataCite details for records, used to construct tombstone pages</epp:phrase>
+
+</epp:phrases>
