@@ -100,7 +100,9 @@ $c->{datacite_mapping_creators} = sub {
             if ($family eq '' && $given eq '') {
                 $creators->appendChild($author);
             } else {
-                $author->appendChild($xml->create_data_element("creatorName", $name_str));
+                $author->appendChild($xml->create_data_element("creatorName", $name_str,
+                    nameType => "Personal",
+                ));                        
             }
             if ($given eq '') {
                 $creators->appendChild($author);
@@ -174,8 +176,8 @@ $c->{datacite_mapping_contributors} = sub {
 
     my $contributors = undef;
     
-    if($dataobj->exists_and_set("contributors")){
-
+    if($dataobj->exists_and_set("contributors"))
+    {
         $contributors = $xml->create_element("contributors");
 
         foreach my $c ( @{$dataobj->value("contributors")} )
@@ -200,7 +202,8 @@ $c->{datacite_mapping_contributors} = sub {
             if ($family eq '' && $given eq '') {
                 $contributors->appendChild($contributor);
             } else {
-                $contributor->appendChild($xml->create_data_element("contributorName", $name_str));
+                $contributor->appendChild($xml->create_data_element("contributorName", $name_str, nameType => "Personal"));
+
             }
             if ($given eq '') {
                 $contributors->appendChild($contributor);
@@ -212,6 +215,16 @@ $c->{datacite_mapping_contributors} = sub {
             } else {
                 $contributor->appendChild($xml->create_data_element("familyName", $family));
             }
+            if ($dataobj->exists_and_set("contributors_orcid")) {
+                if ($orcid eq '') {
+                    $contributors->appendChild($contributor);
+                } else {
+                    $contributor->appendChild($xml->create_data_element("nameIdentifier", $orcid, 
+                            schemeURI =>"http://orcid.org/", 
+                            nameIdentifierScheme=>"ORCID"));
+                }
+            }
+
             $contributors->appendChild($contributor);
         }
     }
@@ -264,7 +277,8 @@ $c->{datacite_mapping_publication_year} = sub {
 
     my $publicationYear = undef;
     my $pub_year = undef;
-    if( $dataobj->exists_and_set( "date" ) && $dataobj->exists_and_set( "date_type" ) && $dataobj->value( "date_type" ) eq "published" ) {
+    if( $dataobj->exists_and_set( "date" ) && $dataobj->exists_and_set( "date_type" ) && $repo->call(["datacitedoi", "validate_date_type"], $repo, $dataobj ) )
+    {
         $dataobj->get_value( "date" ) =~ /^([0-9]{4})/;
         $pub_year = $1;
     }
@@ -280,6 +294,8 @@ $c->{datacite_mapping_publication_year} = sub {
 
     return $publicationYear;
 };
+
+
 
 ##################################################
 # resourceType this is derived from the eprint.type and the datacitedoi->{typemap} in cfg/cfg.d/z_datacite.pl
@@ -865,13 +881,27 @@ $c->{validate_datacite_eprint} = sub
                 default_publisher => $default_publisher);
 	}
 
-	if( !$eprint->is_set( "date" ) || !$eprint->is_set( "date_type" ) || ($eprint->value( "date_type" ) ne "published") )
-	{
-		my $dates = $xml->create_element( "span", class=>"ep_problem_field:dates" );
+    my $no_pub_year = 1;
+    if( $eprint->exists_and_set( "date" ) && $eprint->exists_and_set( "date_type" ) && $repository->call(["datacitedoi", "validate_date_type"], $repository, $eprint ) )
+    {            
+        $no_pub_year = 0;
+    }
 
+    for my $doc ( $eprint->get_all_documents() )
+    {
+        if($doc->exists_and_set("date_embargo"))
+        {
+            $no_pub_year = 0;
+        }
+    }
+
+    if( $no_pub_year )
+    {
+		my $dates = $xml->create_element( "span", class=>"ep_problem_field:dates" );
 		push @problems, $repository->html_phrase( 
-				"datacite_validate:need_published_year",
-				dates=>$dates );
+	        "datacite_validate:need_published_year",
+		    dates=>$dates
+        );
 	}
 
 	# If we don't have a type or its not in our mapping, thats bad
@@ -931,14 +961,28 @@ $c->{validate_datacite_document} = sub
 				publisher=>$publisher,
                 default_publisher => $default_publisher);
 	}
+ 
+    my $no_pub_year = 1;
+    if( $eprint->exists_and_set( "date" ) && $eprint->exists_and_set( "date_type" ) && $eprint->value( "date_type" ) eq "published" )
+    {            
+        $no_pub_year = 0;
+    }
 
-	if( !$eprint->is_set( "date" ) || !$eprint->is_set( "date_type" ) || ($eprint->value( "date_type" ) ne "published") )
-	{
+    for my $doc ( $eprint->get_all_documents() )
+    {
+        if($doc->exists_and_set("date_embargo"))
+        {
+            $no_pub_year = 0;
+        }
+    }
+
+    if( $no_pub_year )
+    {
 		my $dates = $xml->create_element( "span", class=>"ep_problem_field:dates" );
-
 		push @problems, $repository->html_phrase( 
-				"datacite_validate:need_published_year",
-				dates=>$dates );
+	        "datacite_validate:need_published_year",
+		    dates=>$dates
+        );
 	}
 
 	# If we don't have a type or its not in our mapping, thats bad
@@ -954,3 +998,25 @@ $c->{validate_datacite_document} = sub
 	return( @problems );
 };
 
+$c->{datacitedoi}->{validate_date_type} = sub {
+
+    my( $repo, $eprint ) = @_;
+
+    return 1 if $eprint->value( "date_type" ) eq "published";
+    return 1 if $eprint->value( "date_type" ) eq "published_online";
+
+    # if this is a thesis, we might not have a published date
+    # but an awarded or completed date will do in most cases
+
+    my $thesis_date_types = $repo->get_conf( "datacitedoi", "thesis_date_types" );
+    if( defined $thesis_date_types )
+    {
+        if( $eprint->value( "type" ) eq "thesis" && 
+            ( grep $eprint->value( "date_type")  eq $_, @$thesis_date_types ) ) 
+        {
+            return 1; # we have date type acceptable for a thesis
+        }
+    }
+
+    return 0;
+};
