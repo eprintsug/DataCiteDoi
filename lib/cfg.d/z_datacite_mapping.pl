@@ -95,7 +95,7 @@ $c->{datacite_mapping_creators} = sub {
 
             my $family = $name->{name}->{family};
             my $given = $name->{name}->{given};
-            my $orcid = $name->{orcid};
+            my $orcid = $name->{orcid} ? $name->{orcid} : '';
 
             if ($family eq '' && $given eq '') {
                 $creators->appendChild($author);
