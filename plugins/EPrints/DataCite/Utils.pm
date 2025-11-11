@@ -10,6 +10,11 @@ sub generate_doi
 {
     my( $repository, $dataobj ) = @_;
 
+    if( $repository->can_call( "generate_doi_override" ) )
+    {
+        return $repository->call( "generate_doi_override", $repository, $dataobj );
+    }
+
     my $z_pad = $repository->get_conf( "datacitedoi", "zero_padding") || 0;
 
     my $id = $dataobj->id;
