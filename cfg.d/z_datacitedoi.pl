@@ -231,6 +231,8 @@ $c->add_dataset_trigger( "eprint", EP_TRIGGER_REMOVED, \&remove_doi );
 $c->add_dataset_trigger( "document", EP_TRIGGER_REMOVED, \&remove_doi );
 
 {
+    no warnings 'redefine';
+
     sub remove_doi
     {
         my( %params ) = @_;
