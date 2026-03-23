@@ -32,7 +32,17 @@ sub generate_doi
 
     # construct the DOI string
     my $prefix = $repository->get_conf( "datacitedoi", "prefix" );
-    my $thisdoi = $prefix.$delim1.$repository->get_conf( "datacitedoi", "repoid" ).$delim2.$id;
+    my $suffix = $repository->get_conf( "datacitedoi", "repoid" ).$delim2.$id;
+    if ( $repository->get_conf( "datacitedoi", "use_cool_doi" ) )
+    {
+	    use Digest::MD5;
+	    use Encode::Base32::Crockford;
+	    # Get first 15 hex chars of the MD5 digest of the original suffix (16 chars could cause integer overflow).
+	    # Convert hex chars in decimal number and encode using Crockford Base32 and then lowercase the output for
+	    # greater readability.
+	    $suffix = lc( Encode::Base32::Crockford::base32_encode( hex( "0x". substr( Digest::MD5::md5_hex( $suffix ), 0, 15 ) ) ) );
+    }
+    my $thisdoi = $prefix.$delim1.$suffix;
     
     return $thisdoi;    
 }
