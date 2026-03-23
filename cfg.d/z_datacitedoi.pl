@@ -134,6 +134,9 @@ $c->{datacitedoi}{zero_padding} = 8;
 #Only useful for testing from "wrong" domain (eg an unregistered test server) should be undef for normal operation
 $c->{datacitedoi}{override_url} = undef;
 
+# Alternatively, Generate Cool DOI using Crockford Base32 (see https://datacite.org/blog/cool-dois/)
+#$c->{datacitedoi}{override_url} = \&EPrints::DataCite::Utils::generate_doi_base32_crockford;
+
 ##########################
 ##### When to coin ? #####
 ##########################
