@@ -307,7 +307,7 @@ sub generate_doi_base32_crockford
     my( $delim1, $delim2 ) = @{$repository->get_conf( "datacitedoi", "delimiters" )};
 
     # Get default DOI
-    $thisdoi = generate_default_doi( $repository, $dataobj );
+    my $thisdoi = generate_default_doi( $repository, $dataobj );
 
     # Split to get out suffix and prefix
     my ( $doi_prefix, $doi_suffix ) = split( $delim1, $thisdoi, 2 );
@@ -316,7 +316,7 @@ sub generate_doi_base32_crockford
     my $md5_hex = substr( Digest::MD5::md5_hex( $doi_suffix ), 0, 15 );
 
     # Convert hex chars in decimal number and encode using Crockford Base32 and then lowercase the output for greater readability.
-    $doi_suffix  = lc( Encode::Base32::Crockford::base32_encode(  hex( "0x". $md5_hex ) );
+    $doi_suffix  = lc( Encode::Base32::Crockford::base32_encode(  hex( "0x". $md5_hex ) ) );
 
     # Put DOI back together gain
     $thisdoi = $doi_prefix . $delim1 . $doi_suffix;
