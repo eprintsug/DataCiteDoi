@@ -19,7 +19,7 @@ sub generate_doi
 
     my $id = $dataobj->id;
     $id  = sprintf( "%0" . $z_pad . "d" , $id );
-   
+ 
     if( $dataobj->get_dataset_id eq "document" )
     {
         my $eprintid = $dataobj->get_eprint->id;
@@ -48,9 +48,57 @@ sub generate_doi
 	    $suffix = lc( Encode::Base32::Crockford::base32_encode( hex( "0x". substr( Digest::MD5::md5_hex( $suffix ), 0, 15 ) ) ) );
     }
     my $thisdoi = $prefix.$delim1.$suffix;
-    
-    return $thisdoi;    
+ 
+    return $thisdoi; 
 }
+
+sub generate_doi_base32_crockford
+{
+    my( $repository, $dataobj ) = @_;
+
+    use Digest::MD5;
+    eval "use Encode::Base32::Crockford";
+    if( $@ )
+    {
+        $repository->log( "ERROR: Encode::Base32::Crockford not installed, but config is trying to use 'generate_doi_base32_crockford' to generate DOIs" );
+        return;
+    }
+
+    # NB Most of the following is duplicated from generate_doi, but the two methods (and any other generate_doi_X methods) should be standalone
+    my $z_pad = $repository->get_conf( "datacitedoi", "zero_padding") || 0;
+
+    my $id = $dataobj->id;
+    $id  = sprintf( "%0" . $z_pad . "d" , $id );
+ 
+    if( $dataobj->get_dataset_id eq "document" )
+    {
+        my $eprintid = $dataobj->get_eprint->id;
+        $eprintid = sprintf( "%0" . $z_pad . "d" , $eprintid );
+        $id = "$eprintid.$id";
+    }
+
+    my( $delim1, $delim2 ) = @{$repository->get_conf( "datacitedoi", "delimiters" )};
+
+    # default to slash
+    $delim1 = "/" if( !defined $delim1 );
+
+    # second defaults to first
+    $delim2 = $delim1 if( !defined $delim2 );
+
+    # construct the DOI string
+    my $prefix = $repository->get_conf( "datacitedoi", "prefix" );
+    my $suffix = $repository->get_conf( "datacitedoi", "repoid" ).$delim2.$id;
+ 
+    # Get first 15 hex chars of the MD5 digest of the original suffix (16 chars could cause integer overflow).
+    # Convert hex chars in decimal number and encode using Crockford Base32 and then lowercase the output for
+    # greater readability.
+    $suffix = lc( Encode::Base32::Crockford::base32_encode( hex( "0x". substr( Digest::MD5::md5_hex( $suffix ), 0, 15 ) ) ) );
+
+    my $thisdoi = $prefix.$delim1.$suffix;
+ 
+    return $thisdoi; 
+}
+
 
 # reserve a doi, a.k.a create draft doi
 sub reserve_doi

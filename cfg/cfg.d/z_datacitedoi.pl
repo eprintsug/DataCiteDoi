@@ -124,6 +124,19 @@ $c->{datacitedoi}{delimiters} = ["/","."];
 # Will only work if what is found adheres to DOI syntax rules (obviously)
 $c->{datacitedoi}{allow_custom_doi} = 0;
 
+# If you want to use a custom generator for the DOI, either add it as a method:
+########################################
+# $c->{generate_doi_override} = sub
+# {
+#     my( $repository, $dataobj ) = @_;
+#     # ... custom code ...
+#     return $thisdoi;
+# }
+########################################
+# or configure an existing method
+# $c->{generate_doi_override} = \&EPrints::DataCite::Utils::generate_doi_base32_crockford;
+#
+
 # If set, rather than using DOI suffix like repoid.01234567, which have semantic meaning and may become irrelevant
 # in future, encode this using Crockford Base32.
 $c->{datacitedoi}{use_cool_doi} = 0;
