@@ -300,28 +300,34 @@ sub create_related_identifier
 
 sub generate_doi_base32_crockford
 {
-    my( $repository, $dataobj ) = @_;
+	my( $repository, $dataobj ) = @_;
 
-    use Digest::MD5;
-    use Encode::Base32::Crockford;
-    my( $delim1, $delim2 ) = @{$repository->get_conf( "datacitedoi", "delimiters" )};
+	use Digest::MD5;
+	eval "use Encode::Base32::Crockford";
+	if($@) 
+	{
+		print STDERR "Unable to import Encode::Base32::Crockford\n";
+		return;
+	}
 
-    # Get default DOI
-    my $thisdoi = generate_default_doi( $repository, $dataobj );
+	my( $delim1, $delim2 ) = @{$repository->get_conf( "datacitedoi", "delimiters" )};
 
-    # Split to get out suffix and prefix
-    my ( $doi_prefix, $doi_suffix ) = split( $delim1, $thisdoi, 2 );
+	# Get default DOI
+	my $thisdoi = generate_default_doi( $repository, $dataobj );
 
-    # Get first 15 hex chars of the MD5 digest of the original suffix (16 chars could cause integer overflow).
-    my $md5_hex = substr( Digest::MD5::md5_hex( $doi_suffix ), 0, 15 );
+	# Split to get out suffix and prefix
+	my ( $doi_prefix, $doi_suffix ) = split( $delim1, $thisdoi, 2 );
 
-    # Convert hex chars in decimal number and encode using Crockford Base32 and then lowercase the output for greater readability.
-    $doi_suffix  = lc( Encode::Base32::Crockford::base32_encode(  hex( "0x". $md5_hex ) ) );
+	# Get first 15 hex chars of the MD5 digest of the original suffix (16 chars could cause integer overflow).
+	my $md5_hex = substr( Digest::MD5::md5_hex( $doi_suffix ), 0, 15 );
 
-    # Put DOI back together gain
-    $thisdoi = $doi_prefix . $delim1 . $doi_suffix;
+	# Convert hex chars in decimal number and encode using Crockford Base32 and then lowercase the output for greater readability.
+	$doi_suffix  = lc( Encode::Base32::Crockford::base32_encode(  hex( "0x". $md5_hex ) ) );
 
-    return $thisdoi;
+	# Put DOI back together gain
+	$thisdoi = $doi_prefix . $delim1 . $doi_suffix;
+
+	return $thisdoi;
 }
 
 1;
