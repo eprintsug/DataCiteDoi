@@ -322,6 +322,8 @@ sub generate_doi_base32_crockford
 	my $md5_hex = substr( Digest::MD5::md5_hex( $doi_suffix ), 0, 15 );
 
 	# Convert hex chars in decimal number and encode using Crockford Base32 and then lowercase the output for greater readability.
+	# Suppress "Hexadecimal number > 0xffffffff non-portable" warning
+	no warnings 'portable';
 	$doi_suffix = lc( Encode::Base32::Crockford::base32_encode(  hex( "0x". $md5_hex ) ) );
 
 	# Insert hyphen every 4 characters (last block may have 1,2 or 3 characters e.g. xxxx-xxxx-x)
