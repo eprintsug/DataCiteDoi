@@ -142,7 +142,7 @@ $c->{datacitedoi}{override_url} = undef;
 # to an existing method in the Utils module, such as 'Cool DOIs' using Crockford Base32
 # (see https://datacite.org/blog/cool-dois/). NB the module Encode::Base32::Crockford must be installed
 # generate this style of DOI
-#$c->{datacitedoi}{override_url} = \&EPrints::DataCite::Utils::generate_doi_base32_crockford;
+#$c->{datacitedoi}{generate_doi_override} = \&EPrints::DataCite::Utils::generate_doi_base32_crockford;
 # -or -
 #$c->{datacitedoi}{generate_doi_override} = sub
 #{
