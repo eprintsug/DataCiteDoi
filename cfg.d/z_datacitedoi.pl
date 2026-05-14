@@ -134,8 +134,21 @@ $c->{datacitedoi}{zero_padding} = 8;
 #Only useful for testing from "wrong" domain (eg an unregistered test server) should be undef for normal operation
 $c->{datacitedoi}{override_url} = undef;
 
-# Alternatively, Generate Cool DOI using Crockford Base32 (see https://datacite.org/blog/cool-dois/)
+
+##########################################
+### Format of DOI to be generated      ###
+##########################################
+# A custom method can be defined to generate a DOI to your own spec. This could be a sub, or point
+# to an existing method in the Utils module, such as 'Cool DOIs' using Crockford Base32
+# (see https://datacite.org/blog/cool-dois/)
 #$c->{datacitedoi}{override_url} = \&EPrints::DataCite::Utils::generate_doi_base32_crockford;
+# -or -
+#$c->{datacitedoi}{generate_doi_override} = sub
+#{
+#	my( $repo, $dataobj ) = @_;
+#	... generate the full DOI (including the prefix). See Utils.pm for inspiration.
+#	return $thisdoi;
+#}
 
 ##########################
 ##### When to coin ? #####
