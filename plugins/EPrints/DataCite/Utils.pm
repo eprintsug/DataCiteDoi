@@ -42,9 +42,9 @@ sub generate_doi
 {
     my( $repository, $dataobj ) = @_;
 
-    if( $repository->can_call( "generate_doi_override" ) )
+    if( $repository->can_call( "datacitedoi", "generate_doi_override" ) )
     {
-        return $repository->call( "generate_doi_override", $repository, $dataobj );
+        return $repository->call( [ "datacitedoi", "generate_doi_override" ], $repository, $dataobj );
     }
 
     return generate_default_doi( $repository, $dataobj );
