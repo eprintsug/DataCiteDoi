@@ -29,7 +29,7 @@
     <epp:phrase id="licenses_typename_cc_by_nc_4">Creative Commons: Attribution-NonCommercial 4.0</epp:phrase>
     <epp:phrase id="licenses_typename_cc_by_nd_4">Creative Commons: Attribution-No Derivative Works 4.0</epp:phrase>
     <epp:phrase id="licenses_typename_cc_by_sa_4">Creative Commons: Attribution-Share Alike 4.0</epp:phrase>
-
+	<epp:phrase id="licenses_typename_ogl_3">UK Open Government Licence 3.0</epp:phrase>
     <epp:phrase id="licenses_typename_cc_public_domain">Creative Commons: Public Domain Dedication</epp:phrase>
     <epp:phrase id="licenses_typename_gnu_gpl_3">Software: GNU GPL 3.0</epp:phrase>
     <epp:phrase id="licenses_typename_gnu_lgpl_3">Software: GNU LGPL 3.0</epp:phrase>
@@ -47,6 +47,7 @@
     <epp:phrase id="licenses_description_apache_2"><a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a></epp:phrase>
     <epp:phrase id="licenses_description_uor">University of Reading Licence</epp:phrase>
   <epp:phrase id="licenses_description_attached">Licence document attached</epp:phrase>
+	<epp:phrase id="licenses_description_ogl_3"><a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">UK Open Government Licence 3.0</a></epp:phrase>
 
     <epp:phrase id="licenses_typename_cc_by_nc_nd_img"><a href="http://creativecommons.org/licenses/by-nc-nd/3.0/"><img src="/images/by-nc-nd.png" style="width: 100px;" title="Creative Commons: Attribution-NonCommercial-No Derivative Works 3.0"/></a></epp:phrase>
     <epp:phrase id="licenses_typename_cc_by_img"><a href="http://creativecommons.org/licenses/by/3.0/"><img src="/images/by.png" style="width: 100px;" title="Creative Commons: Attribution 3.0"/></a></epp:phrase>
@@ -77,7 +78,9 @@
 
      <epp:phrase id="licenses_typename_uor_img"><a href="/uor_licence.html"><epc:phrase ref="licenses_description_uor"/></a></epp:phrase>
 
-
+<epp:phrase id="licenses_typename_ogl_3_img"><a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">
+	<epc:phrase ref="licenses_description_ogl_3"/></a></epp:phrase>
+	
 <!--    <epp:phrase id="licenses_typename_attached_img"><a href="#" onclick="jQuery('#files_box_rdlicence &gt; div &gt; div').find('[id$=_meta_bar]').find('a').trigger('click'); return false;">Licence document attached to this item</a></epp:phrase> -->
     <epp:phrase id="licenses_typename_attached_img"><a href="#" onclick="console.log(jQuery('#files_box_rdlicence &gt; div &gt; div a.ep_box_collapse_link:eq(1)').length); jQuery('#files_box_rdlicence &gt; div &gt; div a.ep_box_collapse_link:eq(1)').trigger('click'); return false;">Licence document attached to this item</a></epp:phrase>
 
@@ -119,6 +122,7 @@
     <epp:phrase id="licenses_uri_gnu_lgpl_3">http://www.gnu.org/licenses/lgpl.html</epp:phrase>
     <epp:phrase id="licenses_uri_apache_2">http://www.apache.org/licenses/LICENSE-2.0</epp:phrase>
     <epp:phrase id="licenses_uri_uor">http://researchdata.reading.ac.uk/licence_restricted_data.html</epp:phrase>
+	 <epp:phrase id="licenses_uri_ogl_3">https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/</epp:phrase>
 
 
     <epp:phrase id="datacite_validate:need_creators_or_corp_creators"><p>There are no suitable values for the mandatory field <strong>datacite:Creator</strong>. Please supply <epc:pin name="creators">creators</epc:pin> or <epc:pin name="corp_creators">corp_creators</epc:pin> before minting a DOI.</p></epp:phrase>
