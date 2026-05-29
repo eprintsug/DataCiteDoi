@@ -1,0 +1,86 @@
+/*** Generic EPrints (just in case it's not already present) ***/
+.ep_table{
+    display: table;
+}
+
+.ep_table_row{
+    display: table-row;
+}
+
+.ep_table_cell{
+    display: table-cell;
+}
+
+/*** DataCite Screen ***/
+.datacite_object
+{
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+}
+
+.datacite_section
+{
+    margin-bottom: 10px;
+}
+
+.datacite_section .ep_table_row .ep_table_cell:first-child
+{
+    padding-right: 5px;
+    font-weight: bold;
+    text-align: right;
+}
+
+.datacite_section .ep_table_row .ep_table_cell
+{
+    padding-bottom: 10px;
+}
+
+li.coin_warning
+{
+    list-style-image: url(/style/images/warning-icon.png);
+}
+
+.datacite_xml .ep_summary_box
+{
+    margin-bottom: 0px;
+}
+
+/*** List results from DataCite ***/
+.datacite_results
+{
+    padding: 0px 10px 0px 10px;
+}
+
+.datacite_result
+{
+    padding: 10px;
+    border: 1px solid #cdd2d5;
+    margin-bottom: 10px;
+}
+
+.datacite_result > div
+{
+    display: inline-block;
+}
+
+.datacite_result .datacite_info
+{
+    width: 80%;   
+}
+
+.datacite_result .datacite_info p
+{
+    margin-bottom: 0;
+}
+
+.datacite_result .datacite_info a, .datacite_result .datacite_info a:visited
+{
+    color: #3498db;
+    font-weight: bold;
+}
+
+.datacite_result .datacite_claim
+{
+    float: right;
+}

@@ -2,12 +2,15 @@
 <!DOCTYPE phrases SYSTEM "entities.dtd">
 
 <epp:phrases xmlns="http://www.w3.org/1999/xhtml" xmlns:epp="http://eprints.org/ep3/phrase" xmlns:epc="http://eprints.org/ep3/control">
-    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:coindoi:description">This will add a coin-DOI event to the event queue (i.e. Will not happen immediately)</epp:phrase>
-    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:coindoi:title">Coin DOI</epp:phrase>
-    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:coiningdoi">This item will have a DOI coined when the indexer gets around to it.</epp:phrase>
+
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:coindoi:description">This will add a mint-DOI event to the event queue (i.e. Will not happen immediately)</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:coindoi:title">Mint DOI</epp:phrase>
     <epp:phrase id="embargoed_until">. Embargoed until: <epc:pin name="embargo_date"/> </epp:phrase>
 
-
+    <!-- Messages -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:mintdoi">This item will have a DOI created shortly.</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:updatedoi">The metadata associated with this DOI will be updated shortly.</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:updateurl">The metadata and URL associated with this DOI will be updated shortly.</epp:phrase>
 
 <!--license-->
 
@@ -118,15 +121,94 @@
     <epp:phrase id="licenses_uri_uor">http://researchdata.reading.ac.uk/licence_restricted_data.html</epp:phrase>
 
 
-    <epp:phrase id="datacite_validate:need_creators_or_corp_creators"><p>There are no suitable values for the mandatory field <strong>datacite:Creator</strong>. Please supply <epc:pin name="creators">creators</epc:pin> or <epc:pin name="corp_creators">corp_creators</epc:pin> before coining a DOI.</p></epp:phrase>
-    <epp:phrase id="datacite_validate:need_title"><p>There are no suitable values for the mandatory field <strong>datacite:Title</strong>. Please supply a <epc:pin name="title">title</epc:pin> before coining a DOI.</p></epp:phrase>
+    <epp:phrase id="datacite_validate:need_creators_or_corp_creators"><p>There are no suitable values for the mandatory field <strong>datacite:Creator</strong>. Please supply <epc:pin name="creators">creators</epc:pin> or <epc:pin name="corp_creators">corp_creators</epc:pin> before minting a DOI.</p></epp:phrase>
+    <epp:phrase id="datacite_validate:need_title"><p>There are no suitable values for the mandatory field <strong>datacite:Title</strong>. Please supply a <epc:pin name="title">title</epc:pin> before minting a DOI.</p></epp:phrase>
     <!--    <epp:phrase id="datacite_validate:need_publisher"><p>There are no suitable values for the mandatory field <strong>datacite:Publisher</strong>. We will use the default publisher set in the datacite configuration <strong>"<epc:pin name="default_publisher"/>"</strong>.</p><p>If you would prefer not to use this then pleae supply an alternative <epc:pin name="publisher">publisher</epc:pin> before coining a DOI.</p></epp:phrase> -->
-    <epp:phrase id="datacite_validate:need_publisher"><p>There are no suitable values for the mandatory field <strong>datacite:Publisher</strong>. Please supply <epc:pin name="publisher">publisher</epc:pin> before coining a DOI.</p></epp:phrase>
+    <epp:phrase id="datacite_validate:need_publisher"><p>There are no suitable values for the mandatory field <strong>datacite:Publisher</strong>. Please supply <epc:pin name="publisher">publisher</epc:pin> before minting a DOI.</p></epp:phrase>
 
-    <epp:phrase id="datacite_validate:need_published_year"><p>There are no suitable values for the mandatory field <strong>datacite:PublicationYear</strong>. Please supply a <epc:pin name="dates">publication date</epc:pin> before coining a DOI.</p></epp:phrase>
+    <epp:phrase id="datacite_validate:need_published_year"><p>There are no suitable values for the mandatory field <strong>datacite:PublicationYear</strong>. Please supply a <epc:pin name="dates">publication date</epc:pin> before minting a DOI.</p></epp:phrase>
 
     <!-- Would be nice to hotlink the plugin typemap too -->
     <epp:phrase id="datacite_validate:need_mapped_type"><p>Your eprint is either <epc:pin name="types">missing its type</epc:pin> or the type has no match in the plugin typemap.</p></epp:phrase>
 
+
+    <!-- ***DataCite DOI Manager Screen*** -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:title">DataCite DOI Manager</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:description">Manage DOIs for this record via DataCite</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:coin_doi:problems">Before you can mint a new DOI for this record, please resolve the following issues.</epp:phrase>
+
+    <!-- DataObj Info -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:dataobj_doi"><epc:pin name="dataobj" /> DOI: <epc:pin name="doi" /></epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:eprint_name">EPrint</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:document_name">Document</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:undefined">Unspecified</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:datacite_doi">DataCite DOI: <epc:pin name="doi" /></epp:phrase>
+
+
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:current_doi:doi">DOI:</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:current_doi:redirect">Redirects to:</epp:phrase>
+
+    <!-- Current DOI -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:current_doi:title">Current DOI</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:current_doi:redirect:self">This record: <epc:pin name="url"/></epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:current_doi:redirect:parent">Earlier version of this EPrint: <epc:pin name="url"/></epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:current_doi:redirect:non-datacite">Non-DataCite DOI: <epc:pin name="url"/></epp:phrase>
+
+
+    <!-- Available DOI -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:available_doi:title">Available DOI</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:available_doi:alert">This item already has a DOI assigned to it. It is not advisable to create new, unnecessary DOIs if a DOI already exists.</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:available_doi:doi">DOI:</epp:phrase> 
+
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:generated_doi:redirect">Redirects to:</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:generated_doi:redirect:self">This record: <epc:pin name="url"/></epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:generated_doi:redct:parent">Earlier version of this EPrint: <epc:pin name="url"/></epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:generated_doi:redirect:non-datacite">Non-DataCite DOI: <epc:pin name="url"/></epp:phrase>
+
+
+    <!-- Mint DOI -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:mint_doi">Mint</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:mintdoi:title">Mint DOI</epp:phrase>
+
+    <!-- Update DOI -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:update_doi">Update</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:updatedoi:title">Update Metadata</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:updateurl:title">Update Metadata &amp; URL</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:claim:title">Claim DOI</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:reclaim:title">Reclaim DOI</epp:phrase>#
+    
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:update_doi:timestamps">
+        <p>This DOI was originally created on <epc:pin name="registered" /></p>
+        <p>This DOI was last updated on <epc:pin name="updated" /></p>
+        <p>The metadata for this record on DataCite can be updated. This should only be used for correcting errors or adding additional files.</p></epp:phrase>
+
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:coin:claim:title">Claim DOI</epp:phrase>
+
+    <!-- Reserve DOI -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:reserve_doi:title">Reserve:</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:reserve_doi:desc"><p>Reserve this DOI, adding it as a draft DOI in DataCite.</p></epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:reservedoi:title">Reserve DOI</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:action:update_reservedoi:title">Update Reserved DOI</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:reserve_doi:reserved">This DOI was first reserved on <epc:pin name="reserved" /><p>It was last updated on <epc:pin name="updated"/></p></epp:phrase>
+
+    <!-- DataCite DOIs -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:datacite_dois:title">DataCite DOIs</epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:datacite_dois:datacite_result">
+        <p><epc:pin name="title" /></p>
+        <p><epc:pin name="publisher" />, <epc:pin name="date" /></p>
+        <p>DOI: <epc:pin name="doi" /></p>
+    </epp:phrase>
+    <epp:phrase id="datacite_dois:claim_doi">Claim DOI</epp:phrase>
+
+    <!-- API Responses -->
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:datacite_dois:error_message"><p>DataCite Error Message, code: <epc:pin name="code"/>. Please contact the <a href="mailto:{$config{adminemail}}"><epc:phrase ref="archive_name" /> administration</a></p></epp:phrase>
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:datacite_dois:no_results"><p>No records could be found on DataCite for the EPrint with title: <epc:pin name="title">title</epc:pin></p></epp:phrase>
+
+
+    <epp:phrase id="Plugin/Screen/EPrint/Staff/CoinDOI:data:title">DataCite XML</epp:phrase>
+
+    <!-- DataCite Dataset -->
+    <epp:phrase id="datasetname_datacite">DataCite</epp:phrase>
+    <epp:phrase id="datasethelp_datacite">Stores DataCite details for records, used to construct tombstone pages</epp:phrase>
 
 </epp:phrases>

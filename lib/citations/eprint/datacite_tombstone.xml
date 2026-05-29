@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+
+<!--
+    Full "abstract page" (or splash page or summary page, depending on your jargon) for an eprint.
+-->
+
+<cite:citation xmlns="http://www.w3.org/1999/xhtml" xmlns:epc="http://eprints.org/ep3/control" xmlns:cite="http://eprints.org/ep3/citation" >
+
+    <epc:print expr="$item.citation_link('default')" />
+
+</cite:citation>
