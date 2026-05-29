@@ -25,6 +25,7 @@ $c->{datacite_mapping_type} = sub {
 
     my $resourceTypeGeneral_opts = [ qw/
         Audiovisual
+	Award
         Book
         BookChapter
         Collection
@@ -43,12 +44,16 @@ $c->{datacite_mapping_type} = sub {
         OutputManagementPlan
         PeerReview
         PhysicalObject
+	Poster
         Preprint
+	Presentation
+	Project
         Report
         Service
         Software
         Sound
         Standard
+	StudyRegistration
         Text
         Workflow
         Other 
