@@ -56,16 +56,42 @@ $c->{datacitedoi}{minters} = "eprint/edit:editor";
 # eg World Data Center for Climate (WDCC);
 $c->{datacitedoi}{publisher} = "EPrints Repo";
 
+# DataCite 4.5 also defines publisherIdentifier, publisherIdentifierScheme and schemeURI.
+# The hash below can be used to define URLs for publishers that exist in the EPrint record.
+#
+# If a publisher doesn't match any of the keys, the extra attributes won't be used.
+# The scheme and URI attributes will be calculated using the 'identifiermap' below.
+# By default the map understands ROR, DOI, Wikidata, ISNI, VIAF and re4data URLs.
+#
+# At a minimum, if you have a default publisher set, configure their identifier.
+# 
+$c->{datacitedoi}{publishers}{ids} = {
+    # "Publisher"    => "Identifier-URL", #Example format
+    # "EPrints Repo" => "https://ror.org/04z8jg394",
+};
+# This array is used to work out what schema the identifier belongs to.
+# The key is used as the 'publisherIdentifierSchema', and the regexes are used against the identifiers defined above
+$c->{datacitedoi}{publishers}{identifiermap} = [
+    { id => "ROR", uri => "https://ror.org/", regex => qr!^https://ror\.org/0[a-hj-km-np-tv-z|0-9]{6}[0-9]{2}$! }, #https://ror.readme.io/docs/ror-identifier-pattern
+    { id => "DOI", uri => "https://doi.org/", regex => qr!^https?://doi\.org/10\.\d{4,}/\S+$! },
+    { id => "DOI", uri => "https://doi.org/", regex => qr!^https?://dx\.doi\.org/10\.\d{4,}/\S+$! },
+    { id => "Wikidata", uri => "https://www.wikidata.org/wiki/", regex => qr!^https://www\.wikidata\.org/(wiki|entity)/\S+$! },
+    { id => "ISNI", uri => "http://isni.org/", regex => qr!^https?://isni\.org/isni/\S+$! },
+    { id => "VIAF", uri => "http://viaf.org/", regex => qr!^https?://viaf\.org/viaf/\S+$! },
+    { id => "re3data", uri=> "https://re3data.org/", regex => qr!^https?://(?:www\.)re3data\.org/\S+$! },
+];
 # Namespace and location for DataCite XML schema
 # feel free to update, though no guarantees it'll be accepted if you do
 $c->{datacitedoi}{xmlns} = "http://datacite.org/schema/kernel-4";
 # Try this instead:
 # $c->{datacitedoi}{schemaLocation} = $c->{datacitedoi}{xmlns}." ".$c->{datacitedoi}{xmlns}."/metadata.xsd";
-$c->{datacitedoi}{schemaLocation} = $c->{datacitedoi}{xmlns}." https://schema.datacite.org/meta/kernel-4.4/metadata.xsd";
+$c->{datacitedoi}{schemaLocation} = $c->{datacitedoi}{xmlns}." https://schema.datacite.org/meta/kernel-4.5/metadata.xsd";
 
-# Need to map eprint type (article, dataset etc) to DOI ResourceType
-# Controlled list https://schema.datacite.org/meta/kernel-4.4/doc/DataCite-MetadataKernel_v4.4.pdf
-# where v is the ResourceType and a is the resourceTypeGeneral
+# Need to map eprint type (article, dataset etc) to DOI ResourceType.
+# where 'v' is the (free-text) ResourceType and 'a' is the (controlled) resourceTypeGeneral detailed below as 'resourceType'.
+# Controlled list:
+# - Docs: https://datacite-metadata-schema.readthedocs.io/en/4.5/properties/resourcetype/
+# - Xsd:  https://schema.datacite.org/meta/kernel-4.5/include/datacite-resourceType-v4.xsd
 $c->{datacitedoi}{typemap}{article} = {v=>'Article',a=>'JournalArticle'};
 $c->{datacitedoi}{typemap}{book_section} = {v=>'Book Section',a=>'BookChapter'};
 $c->{datacitedoi}{typemap}{monograph} = {v=>'Monograph',a=>'Text'};
@@ -83,13 +109,15 @@ $c->{datacitedoi}{typemap}{audio} = {v=>'Audio',a=>'Sound'};
 $c->{datacitedoi}{typemap}{dataset} = {v=>'Dataset',a=>'Dataset'};
 $c->{datacitedoi}{typemap}{experiment} = {v=>'Experiment',a=>'Text'};
 $c->{datacitedoi}{typemap}{teaching_resource} = {v=>'Teaching Resource',a=>'InteractiveResource'};
-$c->{datacitedoi}{typemap}{other} = {v=>'Misc',a=>'Collection'};
+$c->{datacitedoi}{typemap}{other} = {v=>'Misc',a=>'Other'};
 #For use with recollect
 $c->{datacitedoi}{typemap}{data_collection} = {v=>'Dataset',a=>'Dataset'};
 $c->{datacitedoi}{typemap}{collection} = {v=>'Collection',a=>'Collection'};
 
 # Need to map contributor type to DOI contributorType
-# Controlled list https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf
+# Controlled list:
+# - Docs: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/contributorType/
+# - Xsd:  https://schema.datacite.org/meta/kernel-4.5/include/datacite-contributorType-v4.xsd
 $c->{datacitedoi}{contributormap}{'http://www.loc.gov/loc.terms/relators/MDC'} = 'ContactPerson';
 $c->{datacitedoi}{contributormap}{'http://www.loc.gov/loc.terms/relators/PRC'} = 'ContactPerson';
 $c->{datacitedoi}{contributormap}{'http://www.loc.gov/loc.terms/relators/COL'} = 'DataCollector';
@@ -107,7 +135,9 @@ $c->{datacitedoi}{contributormap}{'http://www.loc.gov/loc.terms/relators/CPH'} =
 $c->{datacitedoi}{contributormap}{'http://www.loc.gov/loc.terms/relators/SPN'} = 'Sponsor';
 
 # Need to map dates date type to DOI dateType
-# Controlled list https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf
+# Controlled list:
+# - Docs: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/dateType/
+# - Xsd:  https://schema.datacite.org/meta/kernel-4.5/include/datacite-dateType-v4.xsd
 $c->{datacitedoi}{datemap}{accepted} = 'Accepted';
 $c->{datacitedoi}{datemap}{submitted} = 'Submitted';
 

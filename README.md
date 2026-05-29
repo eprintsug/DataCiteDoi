@@ -1,6 +1,13 @@
 DateCiteDoi - A plugin to mint DataCite DOIs to eprints
 ========================================================
 
+Updates
+-------
+- 2024-05-20: Support for DataCite v4.5 Schema
+  - New 'Instrument' item type
+  - New identifier attributes for Publisher
+  - Update default mapping for 'Other' eprint types
+
 Requirements
 -------------
 
@@ -86,33 +93,60 @@ $c->{datacitedoi}{minters} = "eprint/edit:editor";
 # eg World Data Center for Climate (WDCC);
 $c->{datacitedoi}{publisher} = "EPrints Repo";
 
+# DataCite 4.5 also defines publisherIdentifier, publisherIdentifierScheme and schemeURI.
+# The hash below can be used to define URLs for publishers that exist in the EPrint record.
+#
+# If a publisher doesn't match any of the keys, the extra attributes won't be used.
+# The scheme and URI attributes will be calculated using the 'identifiermap' below.
+# By default the map understands ROR, DOI, Wikidata, ISNI, VIAF and re4data URLs.
+#
+# At a minimum, if you have a default publisher set, configure their identifier.
+# 
+$c->{datacitedoi}{publishers}{ids} = {
+    # "Publisher"    => "Identifier-URL", #Example format
+    # "EPrints Repo" => "https://ror.org/04z8jg394",
+};
+# This array is used to work out what schema the identifier belongs to.
+# The key is used as the 'publisherIdentifierSchema', and the regexes are used against the identifiers defined above
+$c->{datacitedoi}{publishers}{identifiermap} = [
+    { id => "ROR", uri => "https://ror.org/", regex => qr!^https://ror\.org/0[a-hj-km-np-tv-z|0-9]{6}[0-9]{2}$! }, #https://ror.readme.io/docs/ror-identifier-pattern
+    { id => "DOI", uri => "https://doi.org/", regex => qr!^https?://doi\.org/10\.\d{4,}/\S+$! },
+    { id => "DOI", uri => "https://doi.org/", regex => qr!^https?://dx\.doi\.org/10\.\d{4,}/\S+$! },
+    { id => "Wikidata", uri => "https://www.wikidata.org/wiki/", regex => qr!^https://www\.wikidata\.org/(wiki|entity)/\S+$! },
+    { id => "ISNI", uri => "http://isni.org/", regex => qr!^https?://isni\.org/isni/\S+$! },
+    { id => "VIAF", uri => "http://viaf.org/", regex => qr!^https?://viaf\.org/viaf/\S+$! },
+    { id => "re3data", uri=> "https://re3data.org/", regex => qr!^https?://(?:www\.)re3data\.org/\S+$! },
+];
 # Namespace and location for DataCite XML schema
 # feel free to update, though no guarantees it'll be accepted if you do
 $c->{datacitedoi}{xmlns} = "http://datacite.org/schema/kernel-4";
 # Try this instead:
 # $c->{datacitedoi}{schemaLocation} = $c->{datacitedoi}{xmlns}." ".$c->{datacitedoi}{xmlns}."/metadata.xsd";
-$c->{datacitedoi}{schemaLocation} = $c->{datacitedoi}{xmlns}." http://schema.datacite.org/meta/kernel-4/metadata.xsd";
+$c->{datacitedoi}{schemaLocation} = $c->{datacitedoi}{xmlns}." https://schema.datacite.org/meta/kernel-4.5/metadata.xsd";
 
-# Need to map eprint type (article, dataset etc) to DOI ResourceType
-# Controlled list http://schema.datacite.org/meta/kernel-4.1/doc/DataCite-MetadataKernel_v4.1.pdf
-# where v is the ResourceType and a is the resourceTypeGeneral
-#$c->{datacitedoi}{typemap}{book_section} = {v=>'BookSection',a=>'Text'};
-$c->{datacitedoi}{typemap}{article} = {v=>'Article',a=>'Text'};
+# Need to map eprint type (article, dataset etc) to DOI ResourceType.
+# where 'v' is the (free-text) ResourceType and 'a' is the (controlled) resourceTypeGeneral detailed below as 'resourceType'.
+# Controlled list:
+# - Docs: https://datacite-metadata-schema.readthedocs.io/en/4.5/properties/resourcetype/
+# - Xsd:  https://schema.datacite.org/meta/kernel-4.5/include/datacite-resourceType-v4.xsd
+$c->{datacitedoi}{typemap}{article} = {v=>'Article',a=>'JournalArticle'};
+$c->{datacitedoi}{typemap}{book_section} = {v=>'Book Section',a=>'BookChapter'};
 $c->{datacitedoi}{typemap}{monograph} = {v=>'Monograph',a=>'Text'};
-$c->{datacitedoi}{typemap}{thesis} = {v=>'Thesis',a=>'Text'};
-$c->{datacitedoi}{typemap}{book} = {v=>'Book',a=>'Text'};
+$c->{datacitedoi}{typemap}{conference_item} = {v=>'Conference Paper',a=>'ConferencePaper'};
+$c->{datacitedoi}{typemap}{book} = {v=>'Book',a=>'Book'};
+$c->{datacitedoi}{typemap}{thesis} = {v=>'Thesis',a=>'Dissertation'};
 $c->{datacitedoi}{typemap}{patent} = {v=>'Patent',a=>'Text'};
 $c->{datacitedoi}{typemap}{artefact} = {v=>'Artefact',a=>'PhysicalObject'};
 $c->{datacitedoi}{typemap}{exhibition} = {v=>'Exhibition',a=>'InteractiveResource'};
 $c->{datacitedoi}{typemap}{composition} = {v=>'Composition',a=>'Sound'};
 $c->{datacitedoi}{typemap}{performance} = {v=>'Performance',a=>'Event'};
 $c->{datacitedoi}{typemap}{image} = {v=>'Image',a=>'Image'};
-$c->{datacitedoi}{typemap}{video} = {v=>'Video',a=>'AudioVisual'};
+$c->{datacitedoi}{typemap}{video} = {v=>'Video',a=>'Audiovisual'};
 $c->{datacitedoi}{typemap}{audio} = {v=>'Audio',a=>'Sound'};
 $c->{datacitedoi}{typemap}{dataset} = {v=>'Dataset',a=>'Dataset'};
 $c->{datacitedoi}{typemap}{experiment} = {v=>'Experiment',a=>'Text'};
-$c->{datacitedoi}{typemap}{teaching_resource} = {v=>'TeachingResourse',a=>'InteractiveResource'};
-$c->{datacitedoi}{typemap}{other} = {v=>'Misc',a=>'Collection'};
+$c->{datacitedoi}{typemap}{teaching_resource} = {v=>'Teaching Resource',a=>'InteractiveResource'};
+$c->{datacitedoi}{typemap}{other} = {v=>'Misc',a=>'Other'};
 #For use with recollect
 $c->{datacitedoi}{typemap}{data_collection} = {v=>'Dataset',a=>'Dataset'};
 $c->{datacitedoi}{typemap}{collection} = {v=>'Collection',a=>'Collection'};

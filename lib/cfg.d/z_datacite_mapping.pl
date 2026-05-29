@@ -17,7 +17,9 @@
 
 ##################################################
 # resourceType this is derived from the eprint.type and the datacitedoi->{typemap} in cfg/cfg.d/z_datacite.pl
-# https://schema.datacite.org/meta/kernel-4.0/metadata.xsd#resourceType
+# Controlled list:
+# - Docs: https://datacite-metadata-schema.readthedocs.io/en/4.5/properties/resourcetype/#a-resourcetypegeneral
+# - Xsd:  https://schema.datacite.org/meta/kernel-4.5/include/datacite-resourceType-v4.xsd
 
 $c->{datacite_mapping_type} = sub {
 
@@ -36,6 +38,7 @@ $c->{datacite_mapping_type} = sub {
         Dissertation
         Event
         Image
+	Instrument
         InteractiveResource
         Journal
         JournalArticle
@@ -49,6 +52,7 @@ $c->{datacite_mapping_type} = sub {
         Software
         Sound
         Standard
+	StudyRegistration
         Text
         Workflow
         Other 
@@ -76,7 +80,8 @@ $c->{datacite_mapping_type} = sub {
 
 ###############################################################
 # creators this is derived from creators and/or corp_creators
-# https://schema.datacite.org/meta/kernel-4.0/metadata.xsd#creators
+# - Docs: https://datacite-metadata-schema.readthedocs.io/en/4.5/properties/creator/
+# - Xsd:  https://schema.datacite.org/meta/kernel-4.5/metadata.xsd#creators
 
 $c->{datacite_mapping_creators} = sub {
 
@@ -144,7 +149,8 @@ $c->{datacite_mapping_creators} = sub {
 
 ###############################################################
 # contributors this is derived from contributors
-# https://schema.datacite.org/meta/kernel-4.0/metadata.xsd#creators
+# - Docs: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/contributorType/
+# - Xsd:  https://schema.datacite.org/meta/kernel-4.5/include/datacite-contributorType-v4.xsd
 
 $c->{datacite_mapping_contributors} = sub {
 
@@ -235,7 +241,8 @@ $c->{datacite_mapping_contributors} = sub {
 
 ##################################################
 # titles this is derived from the eprint.title
-# https://schema.datacite.org/meta/kernel-4.0/metadata.xsd#titles
+# - Docs: https://datacite-metadata-schema.readthedocs.io/en/4.5/properties/title/
+# - Xsd:  https://schema.datacite.org/meta/kernel-4.5/metadata.xsd#titles
 
 $c->{datacite_eprint_mapping_title} = sub {
     my($xml, $dataobj, $repo) = @_;
@@ -250,8 +257,10 @@ $c->{datacite_eprint_mapping_title} = sub {
 };
 
 #####################################################
+# 2024-01-22 Updated in Schema 4.5 to include publisherIdentifier, publisherIdentifierScheme and schemeURI
 # publisher this is derived from the eprint.publisher
-# https://schema.datacite.org/meta/kernel-4.0/metadata.xsd#publisher
+# - Docs: https://datacite-metadata-schema.readthedocs.io/en/4.5/properties/publisher/
+# - Xsd:  https://schema.datacite.org/meta/kernel-4.5/metadata.xsd#publisher
 
 $c->{datacite_mapping_publisher} = sub {
 
@@ -261,8 +270,11 @@ $c->{datacite_mapping_publisher} = sub {
     if($dataobj->exists_and_set("publisher")){
         $publisher = $dataobj->render_value("publisher");
     }
-    return $xml->create_data_element("publisher", $publisher);
 
+    # returns hash of attributes to add to publisher element or undef if an ID isn't found.
+    my $pub_id = $repo->call( ["datacitedoi", "get_publisher_identifier"], $repo, $publisher );
+
+    return $xml->create_data_element("publisher", $publisher, %$pub_id );
 };
 
 ##################################################
@@ -1017,6 +1029,49 @@ $c->{datacitedoi}->{validate_date_type} = sub {
             return 1; # we have date type acceptable for a thesis
         }
     }
+
+    return 0;
+};
+
+# This has been defined as a function to allow repositories to do more than just add values to a hash, e.g.
+# values could be retrieved from other sources/config files.
+#
+# By default a hash is defined keyed on the publisher.  
+$c->{datacitedoi}->{get_publisher_identifier} = sub {
+    my( $repo, $publisher ) = @_;
+
+    my $publisher_id = $repo->get_conf( "datacitedoi", "publishers", "ids", $publisher );
+    return if !defined $publisher_id;
+
+    if( defined $repo->get_conf( "datacitedoi", "publishers", "identifiermap" ) )
+    {
+        foreach my $id_details (@{ $repo->get_conf( "datacitedoi", "publishers", "identifiermap" ) })
+	{
+            if( $publisher_id =~ /$id_details->{regex}/ )
+            {
+                return {
+			publisherIdentifier => $publisher_id, 
+			publisherIdentifierScheme => $id_details->{id}, 
+			schemeURI => $id_details->{uri}
+		};
+            }
+	}
+    }
+    return; # don't return empty string
+};
+
+$c->{datacitedoi}->{validate_publisher_identifier} = sub {
+    my( $repo, $publisher ) = @_;
+
+    my $publisher_info = $repo->call( [ "datacitedoi", "get_publisher_identifier" ], $repo, $publisher );
+
+    # having no publisher identifiersnfo is OK
+    return 1 if !defined $publisher_info;
+
+    return 1 if ( EPrints::Utils::is_set( $publisher_info->{'id'} ) && 
+        EPrints::Utils::is_set( $publisher_info->{'idScheme'} ) &&
+        EPrints::Utils::is_set( $publisher_info->{'schemeUri'} ) 
+    ); #TODO schemaUri is not mandatory, but should(?) match id?
 
     return 0;
 };
