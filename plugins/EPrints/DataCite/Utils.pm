@@ -6,20 +6,15 @@ use Encode;
 
 use strict;
 
-sub generate_doi
+sub generate_default_doi
 {
     my( $repository, $dataobj ) = @_;
-
-    if( $repository->can_call( "generate_doi_override" ) )
-    {
-        return $repository->call( "generate_doi_override", $repository, $dataobj );
-    }
 
     my $z_pad = $repository->get_conf( "datacitedoi", "zero_padding") || 0;
 
     my $id = $dataobj->id;
     $id  = sprintf( "%0" . $z_pad . "d" , $id );
-   
+
     if( $dataobj->get_dataset_id eq "document" )
     {
         my $eprintid = $dataobj->get_eprint->id;
@@ -38,8 +33,21 @@ sub generate_doi
     # construct the DOI string
     my $prefix = $repository->get_conf( "datacitedoi", "prefix" );
     my $thisdoi = $prefix.$delim1.$repository->get_conf( "datacitedoi", "repoid" ).$delim2.$id;
-    
-    return $thisdoi;    
+
+    return $thisdoi;
+
+}
+
+sub generate_doi
+{
+    my( $repository, $dataobj ) = @_;
+
+    if( $repository->can_call( "datacitedoi", "generate_doi_override" ) )
+    {
+        return $repository->call( [ "datacitedoi", "generate_doi_override" ], $repository, $dataobj );
+    }
+
+    return generate_default_doi( $repository, $dataobj );
 }
 
 # reserve a doi, a.k.a create draft doi
@@ -288,6 +296,43 @@ sub create_related_identifier
     {
         return undef;
     }
+}
+
+sub generate_doi_base32_crockford
+{
+	my( $repository, $dataobj ) = @_;
+
+	use Digest::MD5;
+	eval "use Encode::Base32::Crockford";
+	if($@) 
+	{
+		print STDERR "Unable to import Encode::Base32::Crockford\n";
+		return;
+	}
+
+	my( $delim1, $delim2 ) = @{$repository->get_conf( "datacitedoi", "delimiters" )};
+
+	# Get default DOI
+	my $thisdoi = generate_default_doi( $repository, $dataobj );
+
+	# Split to get out suffix and prefix
+	my ( $doi_prefix, $doi_suffix ) = split( $delim1, $thisdoi, 2 );
+
+	# Get first 15 hex chars of the MD5 digest of the original suffix (16 chars could cause integer overflow).
+	my $md5_hex = substr( Digest::MD5::md5_hex( $doi_suffix ), 0, 15 );
+
+	# Convert hex chars in decimal number and encode using Crockford Base32 and then lowercase the output for greater readability.
+	# Suppress "Hexadecimal number > 0xffffffff non-portable" warning
+	no warnings 'portable';
+	$doi_suffix = lc( Encode::Base32::Crockford::base32_encode(  hex( "0x". $md5_hex ) ) );
+
+	# Insert hyphen every 4 characters (last block may have 1,2 or 3 characters e.g. xxxx-xxxx-x)
+	$doi_suffix =~ s/(.{4})(?!$)/$1-/g;
+
+	# Put DOI back together gain
+	$thisdoi = $doi_prefix . $delim1 . $doi_suffix;
+
+	return $thisdoi;
 }
 
 1;
