@@ -62,7 +62,7 @@ sub output_dataobj
     {
         $thisdoi = EPrints::DataCite::Utils::generate_doi( $repo, $dataobj );
         #coin_doi may return an event error code if no prefix present assume this is the case
-        my $prefix = $repo->get_conf( "datacitedoi", "prefix" );
+	my $prefix = EPrints::DataCite::Utils::get_conf( $repo, "prefix", $dataobj );
         return $thisdoi if( $thisdoi !~ /^$prefix/ );
     }
     $entry->appendChild( $xml->create_data_element( "identifier", $thisdoi, identifierType=>"DOI" ) );

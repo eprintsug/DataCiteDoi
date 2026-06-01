@@ -55,7 +55,7 @@ sub generate_default_doi
     $delim2 = $delim1 if( !defined $delim2 );
 
     # construct the DOI string
-    my $prefix = $repository->get_conf( "datacitedoi", "prefix" );
+    my $prefix = EPrints::DataCite::Utils::get_conf( $repository, "prefix", $dataobj );
     my $thisdoi = $prefix.$delim1.$repository->get_conf( "datacitedoi", "repoid" ).$delim2.$id;
 
     return $thisdoi;

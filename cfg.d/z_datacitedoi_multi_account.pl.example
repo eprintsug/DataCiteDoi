@@ -12,6 +12,10 @@ $c->{datacitedoi}{multi_account}{account_1}{prefix} = "10.5072";
 $c->{datacitedoi}{multi_account}{account_1}{user} = "USER_1";
 $c->{datacitedoi}{multi_account}{account_1}{pass} = "PASS_1";
 $c->{datacitedoi}{multi_account}{account_1}{publisher} = "EPrints Repo";
+# TODO check whether calling this would work
+# If e.g. generate_doi_override isn't defined, the default will be used.
+#$c->{datacitedoi}{multi_account}{account_1}{generate_doi_override} = \&EPrints::DataCite::Utils::generate_doi_base32_crockford;
+
 # SECOND ACCOUNT
 $c->{datacitedoi}{multi_account}{account_2}{prefix} = "10.5073";
 $c->{datacitedoi}{multi_account}{account_2}{user} = "USER_2";
