@@ -120,8 +120,8 @@ sub reserve_doi
         $headers, Encode::encode_utf8( $content )
     );
 
-    my $user_name = EPrints::DataCite::Utils::get_conf( $repo, "user", $dataobj );;
-    my $user_pw = EPrints::DataCite::Utils::get_conf( $repo, "pass", $dataobj );;
+    my $user_name = EPrints::DataCite::Utils::get_conf( $repo, "user", $dataobj );
+    my $user_pw = EPrints::DataCite::Utils::get_conf( $repo, "pass", $dataobj );
     $req->authorization_basic($user_name, $user_pw);
 
     my $ua = LWP::UserAgent->new;
@@ -188,8 +188,8 @@ sub update_metadata
         $headers, Encode::encode_utf8( $content )
     );
 
-    my $user_name = EPrints::DataCite::Utils::get_conf( $repo, "user", $dataobj );;
-    my $user_pw = EPrints::DataCite::Utils::get_conf( $repo, "pass", $dataobj );;
+    my $user_name = EPrints::DataCite::Utils::get_conf( $repo, "user", $dataobj );
+    my $user_pw = EPrints::DataCite::Utils::get_conf( $repo, "pass", $dataobj );
     $req->authorization_basic($user_name, $user_pw);
 
     my $ua = LWP::UserAgent->new;
@@ -209,8 +209,8 @@ sub datacite_doi_query
     my $ua = LWP::UserAgent->new();
     my $req = HTTP::Request->new( GET => $datacite_url );
  
-    my $user_name = EPrints::DataCite::Utils::get_conf_via_doi( $repo, "user", $doi );;
-    my $user_pw = EPrints::DataCite::Utils::get_conf_via_doi( $repo, "pass", $doi );;
+    my $user_name = EPrints::DataCite::Utils::get_conf_via_doi( $repo, "user", $doi );
+    my $user_pw = EPrints::DataCite::Utils::get_conf_via_doi( $repo, "pass", $doi );
     $req->authorization_basic($user_name, $user_pw);
 
     my $res = $ua->request($req);
