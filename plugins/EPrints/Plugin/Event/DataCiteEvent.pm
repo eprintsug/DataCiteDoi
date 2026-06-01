@@ -71,8 +71,8 @@ sub datacite_doi
 
     my $url = $repository->get_conf( "datacitedoi", "mdsurl" );
     $url.="/" if( $url !~ /\/$/ ); # attach slash if config has forgotten
-    my $user_name = $repository->get_conf( "datacitedoi", "user" );
-    my $user_pw = $repository->get_conf( "datacitedoi", "pass" );
+    my $user_name = EPrints::DataCite::Utils::get_conf( $repository, "user", $dataobj );
+    my $user_pw = EPrints::DataCite::Utils::get_conf( $repository, "pass", $dataobj );
 
     # register metadata;
     my $response_content;
@@ -299,8 +299,8 @@ sub datacite_update_doi_state
     }
 
     # we already have a DOI in the global handle system so let's udpate it's state as appropriate
-    my $user_name = $repo->get_conf( "datacitedoi", "user" );
-    my $user_pw = $repo->get_conf( "datacitedoi", "pass" );
+    my $user_name = EPrints::DataCite::Utils::get_conf( $repo, "user", $dataobj );
+    my $user_pw = EPrints::DataCite::Utils::get_conf( $repo, "pass", $dataobj );
     my $datacite_url = URI->new( $repo->config( 'datacitedoi', 'mdsurl' ) . "/metadata/$dataobj_doi" );
     my $ua = LWP::UserAgent->new();
     my $req;
@@ -377,8 +377,8 @@ sub datacite_remove_doi
         return EPrints::Const::HTTP_NOT_FOUND;
     }
 
-    my $user_name = $repo->get_conf( "datacitedoi", "user" );
-    my $user_pw = $repo->get_conf( "datacitedoi", "pass" );
+    my $user_name = EPrints::DataCite::Utils::get_conf_via_doi( $repo, "user", $doi );
+    my $user_pw = EPrints::DataCite::Utils::get_conf_via_doi( $repo, "pass", $doi );
     my $datacite_url = URI->new( $repo->config( 'datacitedoi', 'mdsurl' ) . "/metadata/$doi" );
     my $ua = LWP::UserAgent->new();
     my $req;
@@ -492,8 +492,8 @@ sub update_datacite_url
     my( $repo, $doi, $url ) = @_;
 
     # get credentials
-    my $user_name = $repo->get_conf( "datacitedoi", "user" );
-    my $user_pw = $repo->get_conf( "datacitedoi", "pass" );
+    my $user_name = EPrints::DataCite::Utils::get_conf_via_doi( $repo, "user", $doi );
+    my $user_pw = EPrints::DataCite::Utils::get_conf_via_doi( $repo, "pass", $doi );
 
     # build url
     my $datacite_url = URI->new( $repo->config( 'datacitedoi', 'mdsurl' ) . "/doi/$doi" );

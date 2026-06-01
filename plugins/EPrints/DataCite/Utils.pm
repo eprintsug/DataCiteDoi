@@ -6,6 +6,30 @@ use Encode;
 
 use strict;
 
+# If multiple DataCite accounts are configured, these methods allow selection of account details based
+# on either the dataobject or DOI. If only one dataCite account is configured, they will return those details.
+sub get_conf
+{
+    my( $repository, $key, $dataobj ) = @_;
+
+    if( $repository->can_call( "datacitedoi", "multi_account_config" ) )
+    {
+        return $repository->call( [ "datacitedoi", "multi_account_config" ], $repository, $key, $dataobj );
+    }
+    return $repository->get_conf( "datacitedoi", $key );
+}
+
+sub get_conf_via_doi
+{
+    my( $repository, $key, $doi ) = @_;
+
+    if( $repository->can_call( "datacitedoi", "multi_account_config_via_doi" ) )
+    {
+        return $repository->call( [ "datacitedoi", "multi_account_config_via_doi" ], $repository, $key, $doi );
+    }
+    return $repository->get_conf( "datacitedoi", $key );
+}
+
 sub generate_default_doi
 {
     my( $repository, $dataobj ) = @_;
@@ -96,8 +120,8 @@ sub reserve_doi
         $headers, Encode::encode_utf8( $content )
     );
 
-    my $user_name = $repo->get_conf( "datacitedoi", "user" );
-    my $user_pw = $repo->get_conf( "datacitedoi", "pass" );
+    my $user_name = EPrints::DataCite::Utils::get_conf( $repo, "user", $dataobj );;
+    my $user_pw = EPrints::DataCite::Utils::get_conf( $repo, "pass", $dataobj );;
     $req->authorization_basic($user_name, $user_pw);
 
     my $ua = LWP::UserAgent->new;
@@ -164,8 +188,8 @@ sub update_metadata
         $headers, Encode::encode_utf8( $content )
     );
 
-    my $user_name = $repo->get_conf( "datacitedoi", "user" );
-    my $user_pw = $repo->get_conf( "datacitedoi", "pass" );
+    my $user_name = EPrints::DataCite::Utils::get_conf( $repo, "user", $dataobj );;
+    my $user_pw = EPrints::DataCite::Utils::get_conf( $repo, "pass", $dataobj );;
     $req->authorization_basic($user_name, $user_pw);
 
     my $ua = LWP::UserAgent->new;
@@ -185,8 +209,8 @@ sub datacite_doi_query
     my $ua = LWP::UserAgent->new();
     my $req = HTTP::Request->new( GET => $datacite_url );
  
-    my $user_name = $repo->get_conf( "datacitedoi", "user" );
-    my $user_pw = $repo->get_conf( "datacitedoi", "pass" );
+    my $user_name = EPrints::DataCite::Utils::get_conf_via_doi( $repo, "user", $doi );;
+    my $user_pw = EPrints::DataCite::Utils::get_conf_via_doi( $repo, "pass", $doi );;
     $req->authorization_basic($user_name, $user_pw);
 
     my $res = $ua->request($req);

@@ -1,0 +1,68 @@
+# This is an example file demonstrating how to use multiple DataCite accounts (or prefixes).
+# If the multi_account hash is NOT defined, the default account details will be used.
+#
+# If the multi_account hash is defined, the config will be called to determine which account should be used.
+# This could pivot around e.g. a division, publisher, userid.
+# There is also a method to look up which account should be used based on the DOI in question.
+# This may use e.g. the DOI prefix to determine which account details should be used.
+
+# These details are provided from the DataCite service.
+# FIRST ACCOUNT
+$c->{datacitedoi}{multi_account}{account_1}{prefix} = "10.5072";
+$c->{datacitedoi}{multi_account}{account_1}{user} = "USER_1";
+$c->{datacitedoi}{multi_account}{account_1}{pass} = "PASS_1";
+$c->{datacitedoi}{multi_account}{account_1}{publisher} = "EPrints Repo";
+# SECOND ACCOUNT
+$c->{datacitedoi}{multi_account}{account_2}{prefix} = "10.5073";
+$c->{datacitedoi}{multi_account}{account_2}{user} = "USER_2";
+$c->{datacitedoi}{multi_account}{account_2}{pass} = "PASS_2";
+$c->{datacitedoi}{multi_account}{account_2}{publisher} = "EPrints Repo 2";
+
+
+$c->{datacitedoi}{multi_account_config} = sub {
+    my( $repo, $key, $dataobj ) = @_;
+
+    my $datacite_account;
+
+    # do something to determine which multi-account to use
+    # NB $dataobj may be a document, or eprint!
+    if( $dataobj->exists_and_set( "publication" ) && $dataobj->value( "publication" ) eq "Something with a special DOI prefix" )
+    {
+        $datacite_account = "account_1";
+    }
+    elsif( my $userid = $dataobj->get_value( "userid" ) )
+    {
+	$datacite_account = "account_2" if $userid == 1234;
+    }
+    # other logic added here
+
+    if( defined $datacite_account )
+    {
+        my $val = $repo->get_conf( "datacitedoi", "multi_account", $datacite_account, $key );
+        return $val if defined $val;
+    }
+
+    return $repo->get_conf( "datacitedoi", $key );
+};
+
+# In some cases, we don't have a datobj to be able to look the account info from.
+# In these cases we may be able to determine the DataCite account from the DOI prefix
+$c->{datacitedoi}{multi_account_config_via_doi} = sub {
+    my( $repo, $key, $doi ) = @_;
+
+    my( $prefix ) = $doi =~ m!^([^/]+)/!;
+
+    my $multi_acc = $repo->get_conf( "datacitedoi", "multi_account" );
+    if( defined $multi_acc )
+    {
+        my( $datacite_account ) = grep{ $multi_acc->{$_}->{prefix} eq $prefix } keys %$multi_acc;
+
+        my $val = $repo->get_conf( "datacitedoi", "multi_account", $datacite_account, $key );
+        return $val if defined $val;
+    }
+    return $repo->get_conf( "datacitedoi", $key );
+
+};
+
+
+

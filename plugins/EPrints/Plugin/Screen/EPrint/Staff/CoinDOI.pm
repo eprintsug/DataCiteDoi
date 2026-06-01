@@ -215,7 +215,7 @@ sub process_datacite_response
     }
 
     # can the repository update it?
-    my $username = $repo->get_conf( "datacitedoi", "user" );
+    my $username = EPrints::DataCite::Utils::get_conf( $repo, "user", $dataobj );
     if( lc( $datacite_data->{data}->{relationships}->{client}->{data}->{id} ) eq lc( $username ) )
     {
         $data->{repo_doi} = 1;   
