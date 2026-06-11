@@ -61,11 +61,15 @@ sub reserve_doi
         $repo_url = $dataobj->uri();
     }
 
+    my $user_name = $repo->get_conf( "datacitedoi", "user" );
+    my $user_pw = $repo->get_conf( "datacitedoi", "pass" );
+
     my $xml = $dataobj->export( "DataCiteXML" );
     $xml = MIME::Base64::encode_base64( encode('utf-8', $xml ) );
 
-    # build the content
-    my $content = qq(
+    # Write JSON payload to a temp file to avoid shell escaping issues
+    my $tmp = File::Temp->new( SUFFIX => '.json', UNLINK => 1 );
+    print $tmp qq(
 {
   "data": {
     "type": "dois",
@@ -78,31 +82,42 @@ sub reserve_doi
 }
 );
 
-    # build request
-    my $headers = HTTP::Headers->new(
-        'Content-Type' => 'application/vnd.api+json',
-    );
-    
-    my $req = HTTP::Request->new(
-        POST => $datacite_url,
-        $headers, Encode::encode_utf8( $content )
+    $tmp->flush();
+    my $tmp_path = $tmp->filename();
+
+    # Build and run the curl command
+    my @cmd = (
+        'curl',
+        '--silent',
+        '-X',       'POST',
+        '-H',       '"Content-Type: application/vnd.api+json"',
+        '--user',   "$user_name:$user_pw",
+        '-d',       '@' . $tmp_path,
+        $datacite_url,
     );
 
-    my $user_name = $repo->get_conf( "datacitedoi", "user" );
-    my $user_pw = $repo->get_conf( "datacitedoi", "pass" );
-    $req->authorization_basic($user_name, $user_pw);
+    # Capture output and HTTP status code
+    my $response_body = '';	
+    my $response_code = '';
+    my $curl_output = `@cmd --write-out '\\n%{http_code}' 2>&1`;
+    if( $curl_output =~ /\A(.*)\n(\d{3})\z/s )
+    {
+        $response_body = $1;
+        $response_code = $2;
+    }
 
-    my $ua = LWP::UserAgent->new;
-    my $res = $ua->request($req);
-   
-    if( $res->is_success )
+    if( $response_code =~ /^2/ )
     {
         my $doifield = $repo->get_conf( "datacitedoi", $class."doifield" );
         $dataobj->set_value( $doifield, $doi );
         $dataobj->commit;
     }
+    else
+    {
+        $repo->log( "Error reserving DOI. Code: " . $response_code . "; Content: " . $response_body );
+    }
 
-    return ($res->content(),$res->code());    
+    return ($response_body, $response_code);    
 }
 
 # update metadata
