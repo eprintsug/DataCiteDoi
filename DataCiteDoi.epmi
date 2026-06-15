@@ -9,9 +9,9 @@
           <datasetid>document</datasetid>
           <filename>cfg.d/z_datacite_mapping.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>68dc06562eaefe0ec1fd5a9e56dccdab</hash>
+          <hash>7e312e0bfd227ac25e3ff9477c978bfd</hash>
           <hash_type>MD5</hash_type>
-          <filesize>36263</filesize>
+          <filesize>38677</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -65,25 +65,25 @@
           <datasetid>document</datasetid>
           <filename>epm/DataCiteDoi/cfg/cfg.d/z_datacitedoi.pl</filename>
           <mime_type>text/plain</mime_type>
-          <hash>278527931e0771de0a6a55f582ba2b8c</hash>
+          <hash>3415309bacde4dba3c5b8263482813d3</hash>
           <hash_type>MD5</hash_type>
-          <filesize>12422</filesize>
+          <filesize>14502</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
           <filename>lang/en/phrases/coinDOI.xml</filename>
           <mime_type>application/xml</mime_type>
-          <hash>e4e9fe7b1cd31413e28e27b0b96feaf8</hash>
+          <hash>d43e8b2a69f7b16f5da1f59bc16897d6</hash>
           <hash_type>MD5</hash_type>
-          <filesize>19239</filesize>
+          <filesize>19826</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
           <filename>plugins/EPrints/DataCite/Utils.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>eb94f1f4db3806617b0324d97a97553c</hash>
+          <hash>88c84903d17e09a13666dc12bbf62b37</hash>
           <hash_type>MD5</hash_type>
-          <filesize>7577</filesize>
+          <filesize>8077</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -105,9 +105,9 @@
           <datasetid>document</datasetid>
           <filename>plugins/EPrints/Plugin/Screen/EPrint/Staff/CoinDOI.pm</filename>
           <mime_type>text/plain</mime_type>
-          <hash>4df9449888085bb2a74234e4de1995c3</hash>
+          <hash>b7e0dfc7328634df2df17e3875bcc3a7</hash>
           <hash_type>MD5</hash_type>
-          <filesize>41426</filesize>
+          <filesize>41454</filesize>
         </file>
         <file>
           <datasetid>document</datasetid>
@@ -147,7 +147,7 @@
       <content>coverimage</content>
     </document>
   </documents>
-  <version>3.3.0</version>
+  <version>3.3.1</version>
   <creators>
     <item>
       <name>

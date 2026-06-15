@@ -869,6 +869,7 @@ sub action_mintdoi
             pluginid => "Event::DataCiteEvent",
             action => "datacite_doi",
             params => [ $dataobj->internal_uri ],
+            priority => 10,
         }); 
 
         $self->add_result_message( "mintdoi" );
