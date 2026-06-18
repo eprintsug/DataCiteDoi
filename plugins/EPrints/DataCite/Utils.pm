@@ -65,18 +65,18 @@ sub reserve_doi
     $xml = MIME::Base64::encode_base64( encode('utf-8', $xml ) );
 
     # build the content
-    my $content = qq(
-{
-  "data": {
-    "type": "dois",
-    "attributes": {
-      "doi": "$doi",
-      "url": "$repo_url",
-      "xml": "$xml"
-    }
-  }
-}
-);
+    my $data = {
+	data => {
+		"type" => "dois",
+		"attributes" => {
+			"doi" => $doi,
+			"url" => $repo_url,
+			"xml" => $xml,
+		}
+	}
+    };
+
+    my $json = JSON->new->encode( $data );
 
     # build request
     my $headers = HTTP::Headers->new(
@@ -85,7 +85,7 @@ sub reserve_doi
     
     my $req = HTTP::Request->new(
         POST => $datacite_url,
-        $headers, Encode::encode_utf8( $content )
+        $headers, Encode::encode_utf8( $json )
     );
 
     my $user_name = $repo->get_conf( "datacitedoi", "user" );
@@ -117,34 +117,21 @@ sub update_metadata
     my $xml = $dataobj->export( "DataCiteXML" );
     $xml = MIME::Base64::encode_base64( encode('utf-8', $xml ) );
 
-    my $content;
+    # build the content
+    my $data = {
+	data => {
+		"attributes" => {
+			"xml" => $xml,
+		}
+	}
+    };
+
     if( defined $url )
     {
+	$data->{data}->{attributes}->{url} = $url;
+    };
 
-        # build the content
-        $content = qq(
-{
-  "data": {
-    "attributes": {
-      "url": "$url",
-      "xml": "$xml"
-    }
-  }
-}
-);
-    }
-    else
-    {
-        $content = qq(
-{
-  "data": {
-    "attributes": {
-      "xml": "$xml"
-    }
-  }
-}
-);
-    }
+    my $json = JSON->new->encode( $data );
 
     # build request
     my $headers = HTTP::Headers->new(
@@ -153,7 +140,7 @@ sub update_metadata
     
     my $req = HTTP::Request->new(
         PUT => $datacite_url,
-        $headers, Encode::encode_utf8( $content )
+        $headers, Encode::encode_utf8( $json )
     );
 
     my $user_name = $repo->get_conf( "datacitedoi", "user" );
