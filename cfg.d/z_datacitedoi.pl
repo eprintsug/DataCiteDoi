@@ -36,8 +36,8 @@ $c->{datacitedoi}{reservestatus} = {inbox=>0,buffer=>1,archive=>1,deletion=>0};
 # doi = {prefix}/{repoid}/{eprintid}
 $c->{datacitedoi}{prefix} = "10.5072";
 $c->{datacitedoi}{repoid} = $c->{host};
-$c->{datacitedoi}{mdsurl} = "https://mds.test.datacite.org/";
-$c->{datacitedoi}{apiurl} = "https://api.test.datacite.org/";
+$c->{datacitedoi}{mdsurl} = "https://mds.test.datacite.org"; # no trailing slash
+$c->{datacitedoi}{apiurl} = "https://api.test.datacite.org"; # no trailing slash
 $c->{datacitedoi}{user} = "USER";
 $c->{datacitedoi}{pass} = "PASS";
 

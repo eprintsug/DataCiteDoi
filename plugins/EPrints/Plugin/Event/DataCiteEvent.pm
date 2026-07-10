@@ -70,7 +70,6 @@ sub datacite_doi
     return $xml if( $xml =~ /^\d+$/ ); # just a number? coin_doi has passed back an error code pass it on...
 
     my $url = $repository->get_conf( "datacitedoi", "mdsurl" );
-    $url.="/" if( $url !~ /\/$/ ); # attach slash if config has forgotten
     my $user_name = EPrints::DataCite::Utils::get_conf( $repository, "user", $dataobj );
     my $user_pw = EPrints::DataCite::Utils::get_conf( $repository, "pass", $dataobj );
 
@@ -80,11 +79,11 @@ sub datacite_doi
     # Test if we want to be using curl; if we don't run the 'old' LWP code
     if( defined $repository->get_conf( "datacitedoi", "get_curl" ) )
     {
-        ( $response_content, $response_code ) =  datacite_request_curl( $url."metadata", $user_name, $user_pw, $xml, "application/xml;charset=UTF-8" );
+        ( $response_content, $response_code ) =  datacite_request_curl( $url."/metadata", $user_name, $user_pw, $xml, "application/xml;charset=UTF-8" );
     }
     else
     {
-        ( $response_content, $response_code ) =  datacite_request( "POST", $url."metadata", $user_name, $user_pw, $xml, "application/xml;charset=UTF-8" );
+        ( $response_content, $response_code ) =  datacite_request( "POST", $url."/metadata", $user_name, $user_pw, $xml, "application/xml;charset=UTF-8" );
     }
 
     if( $response_code !~ /20(1|0)/ )
