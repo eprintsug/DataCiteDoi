@@ -80,6 +80,13 @@ sub reserve_doi
     my( $repo, $dataobj, $doi ) = @_;
     
     my $class = $dataobj->get_dataset_id;
+    my $doifield = $repo->get_conf( "datacitedoi", $class."doifield" );
+    if( ! $dataobj->dataset->has_field( $doifield ) )
+    {
+		my $msg = "ERROR (DataCiteDOI reserve_doi): $class does not have a field $doifield. Cannot store DOI '$doi' for $class #".$dataobj->id;
+		$repo->log( $msg );
+		return ( $msg, EPrints::Const::HTTP_INTERNAL_SERVER_ERROR );
+    }
 
     my $datacite_url = URI->new( $repo->config( 'datacitedoi', 'apiurl' ) . "/dois" );   
 
@@ -129,9 +136,8 @@ sub reserve_doi
    
     if( $res->is_success )
     {
-        my $doifield = $repo->get_conf( "datacitedoi", $class."doifield" );
-        $dataobj->set_value( $doifield, $doi );
-        $dataobj->commit;
+       	$dataobj->set_value( $doifield, $doi );
+       	$dataobj->commit;
     }
 
     return ($res->content(),$res->code());    

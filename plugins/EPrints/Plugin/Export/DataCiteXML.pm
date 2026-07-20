@@ -52,7 +52,11 @@ sub output_dataobj
     #RM We pass in the DOI from Event::DataCite... or from --args on the cmd line
 
     my $thisdoi = $opts{doi};
-    $thisdoi = $dataobj->get_value( "id_number" ) unless defined $opts{doi};
+    my $doi_field = $repo->get_conf( "datacitedoi", $class."doifield" );
+    if( !defined $thisdoi && $dataobj->dataset->has_field( $doi_field ) )
+    {
+        $thisdoi = $dataobj->get_value( $doi_field );
+    }
 
     #RM coin a DOI if either
         # - not come via event or

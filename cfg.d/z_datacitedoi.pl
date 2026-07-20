@@ -217,7 +217,11 @@ $c->add_dataset_trigger( "eprint", EP_TRIGGER_STATUS_CHANGE , sub {
 
     # do we have a DOI?
     my $eprint_doi_field = $repository->get_conf( "datacitedoi", "eprintdoifield" );
-    if( $eprint->is_set( $eprint_doi_field ) )
+    return if !defined $eprint_doi_field;
+
+    $repository->log( "WARNING (DataCiteDOI): EPrint dataset does not have a field '$eprint_doi_field', but that field is defined in the DataCiteDOI configuration" ) if( ! $eprint->dataset->has_field( $eprint_doi_field ) );
+
+    if( $eprint->exists_and_set( $eprint_doi_field ) )
     {
         # trigger indexer update doi event
         $repository->dataset( "event_queue" )->create_dataobj({
@@ -229,9 +233,11 @@ $c->add_dataset_trigger( "eprint", EP_TRIGGER_STATUS_CHANGE , sub {
 
     # and now update the documents
     my $document_doi_field = $repository->get_conf( "datacitedoi", "documentdoifield" );
+    return if !defined $document_doi_field;
+    $repository->log( "WARNING (DataCiteDOI): Document dataset does not have a field '$document_doi_field', but that field is defined in the DataCiteDOI configuration" ) if( ! $repository->dataset( "document" )->has_field( $document_doi_field ) );
     foreach my $doc ( $eprint->get_all_documents )
     {
-        if( $doc->is_set( $document_doi_field ) )
+        if( $doc->exists_and_set( $document_doi_field ) )
         {
             # trigger indexer update doi event
             $repository->dataset( "event_queue" )->create_dataobj({
