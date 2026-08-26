@@ -241,17 +241,20 @@ $c->add_dataset_trigger( "eprint", EP_TRIGGER_STATUS_CHANGE , sub {
     }
 
     # and now update the documents
-    my $document_doi_field = $repository->get_conf( "datacitedoi", "documentdoifield" );
-    foreach my $doc ( $eprint->get_all_documents )
+    if ($repository->get_conf( "datacitedoi", "document_dois" )) 
     {
-        if( $doc->is_set( $document_doi_field ) )
+        my $document_doi_field = $repository->get_conf( "datacitedoi", "documentdoifield" );
+        foreach my $doc ( $eprint->get_all_documents )
         {
-            # trigger indexer update doi event
-            $repository->dataset( "event_queue" )->create_dataobj({
-                pluginid => "Event::DataCiteEvent",
-                action => "datacite_update_doi_state",
-                params => [$doc->internal_uri, $params{new_status}],
-            });
+            if( $doc->is_set( $document_doi_field ) )
+            {
+                # trigger indexer update doi event
+                $repository->dataset( "event_queue" )->create_dataobj({
+                    pluginid => "Event::DataCiteEvent",
+                    action => "datacite_update_doi_state",
+                    params => [$doc->internal_uri, $params{new_status}],
+                });
+            }
         }
     }
 
