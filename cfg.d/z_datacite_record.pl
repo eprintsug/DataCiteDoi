@@ -18,6 +18,19 @@ sub get_defaults
     return $data;
 }
 
+# retrieves a datacite record by doi
+sub get_datacite_record_by_doi
+{
+    my( $class, $session, $doi ) = @_;
+
+    return $session->dataset( $class->get_dataset_id )->search(
+        filters => [
+            { meta_fields => [qw( doi )], value => $doi, match => "EX", },
+        ],
+    )->item( 0 );
+}
+
+
 # retrieves a datacite record based on the dataset and id
 sub get_datacite_record
 {
@@ -65,7 +78,7 @@ unshift @{$c->{fields}->{datacite}}, (
     },
     {
         name => "doi",
-        type => "text",
+        type => "id",
         import => 0,
         can_clone => 0,
         render_value => 'EPrints::Extras::render_possible_doi',
